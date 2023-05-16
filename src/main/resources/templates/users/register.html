@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head></head>
+
+<th:block layout:fragment="customJs">
+  <script>
+
+  </script>
+</th:block>
+
+<th:block layout:fragment="customContent">
+  <h1>회원가입</h1>
+  <div class="x_content">
+    <br/>
+    <form class="form-horizontal form-label-left" data-parsley-validate id="demo-form2" method="post" th:action="@{/users/register}"
+          th:object="${user}">
+
+      <div class="item form-group">
+        <label class="col-form-label col-md-3 col-sm-3 label-align" for="username">아이디:</label>
+        <div class="col-md-6 col-sm-6 ">
+          <input class="form-control" id="username" required="required" th:field="*{username}" type="text">
+          <span class="help-block" id="username_available_message"></span>
+        </div>
+
+      </div>
+      <div class="item form-group">
+        <label class="col-form-label col-md-3 col-sm-3 label-align" for="password">비밀번호:</label>
+        <div class="col-md-6 col-sm-6 ">
+          <input class="form-control" id="password" required="required" th:field="*{password}" type="password">
+        </div>
+      </div>
+
+      <div class="item form-group">
+        <label class="col-form-label col-md-3 col-sm-3 label-align" for="password_duplicate">비밀번호 확인</label>
+        <div class="col-md-6 col-sm-6 ">
+          <span class="help-block" id="password_match_message"></span>
+          <input class="form-control" id="password_duplicate" required="required" type="password">
+        </div>
+      </div>
+
+      <div class="item form-group">
+        <label class="col-form-label col-md-3 col-sm-3 label-align" for="email">이메일</label>
+        <div class="col-md-6 col-sm-6 ">
+          <input class="form-control" id="email" required="required" th:field="*{email}" type="email">
+        </div>
+      </div>
+      <div class="item form-group">
+        <label class="col-form-label col-md-3 col-sm-3 label-align" for="phone">전화번호</label>
+        <div class="col-md-6 col-sm-6 ">
+          <input class="form-control" id="phone" required="required" th:field="*{phone}" type="tel">
+        </div>
+      </div>
+
+      <div class="item form-group">
+        <label class="col-form-label col-md-3 col-sm-3 label-align" for="roleName">권한</label>
+        <div class="col-md-6 col-sm-6 ">
+          <select class="form-control" id="roleName" name="roleName" required="required" th:field="*{roleName}">
+            <option th:each="role : ${T(logistics.user.entity.Role$RoleName).values()}"
+                    th:text="${role}"
+                    th:value="${role}">
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-6 col-sm-6 offset-md-3">
+          <button class="btn btn-primary" type="submit">회원가입</button>
+          <button class="btn btn-secondary" type="reset">취소</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</th:block>
+
+</html>
+
