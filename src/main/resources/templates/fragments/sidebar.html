@@ -1,58 +1,77 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<div id="sidebar-menu" class="main_menu_side hidden-print main_menu" th:fragment="sidebarFragment">
-	<div class="menu_section">
-		<ul class="nav side-menu">
-			<li><a><i class="fa fa-home"></i> Home <span
-					class="fa fa-chevron-down"></span></a>
-				<ul class="nav child_menu">
-					<li><a href="#">소개</a></li>
-					<li><a href="#">공지사항</a></li>
-				</ul></li>
-			<li>
-				<a><i class="fa fa-adn"></i> 관리자페이지
-					<span class="fa fa-chevron-down"></span></a>
+<div class="main_menu_side hidden-print main_menu" id="sidebar-menu" th:fragment="sidebarFragment">
+  <div class="menu_section">
 
-				<ul class="nav child_menu">
-					<li><a><i class="fa fa-group"></i> 회원조회(이규노!) <span
-							class="fa fa-chevron-down"></span></a>
-						<ul class="nav child_menu">
-							<li th:if="${session.userRole == 'ROLE_ADMIN'}"><a th:href="@{/logistics/user/listUser}" href="#"> 회원 관리</a></li>
-							<li th:if="${session.userRole == 'ROLE_ADMIN'}"><a th:href="@{/admin/listAdmin}" href="#">관리자 관리</a></li>
-						</ul></li>
+    <ul class="nav side-menu">
+      <li><a><i class="fa fa-home"></i> Home
+        <span class="fa fa-chevron-down"></span></a>
+        <ul class="nav child_menu">
+          <li><a href="#">소개</a></li>
+          <li><a href="#">공지사항</a></li>
+        </ul>
+      </li>
+    </ul>
 
-					<li><a><i class="fa fa-archive"></i> 사업자 관리(이규노!) <span
-							class="fa fa-chevron-down"></span></a>
-						<ul class="nav child_menu">
-							<li th:if="${session.userRole == 'ROLE_ADMIN'}"><a th:href="@{/admin/companies/listCompany}">사업자 종류 코드</a></li>
-							<li th:if="${session.userRole == 'ROLE_ADMIN'}"><a th:href="@{/admin/companies/info/listInfoCompany}">사업자 정보 조회</a></li>
-							<li th:if="${session.userRole == 'ROLE_ADMIN'}"><a th:href="@{/admin/companies/unit/listUnitCompany}">사업자 계약단가 등록</a></li>
-							<li th:if="${session.userRole == 'ROLE_ADMIN'}"><a th:href="@{/admin/companies/contract/listContractCompany}">사업자 계약 신청관리</a></li>
-						</ul></li>
+    <ul class="nav side-menu">
+      <li><a><i class="fa fa-adn"></i> 관리자페이지
+        <span class="fa fa-chevron-down"></span></a>
+        <ul class="nav child_menu">
+          <li><a href="#" th:href="@{/users/listUser}"> 회원 관리</a></li>
+        </ul>
+      </li>
+    </ul>
 
-					<li><a><i class="fa fa-cube"></i> 재고관리(이규노!) <span
-							class="fa fa-chevron-down"></span></a>
-						<ul class="nav child_menu">
-							<li th:if="${session.userRole == 'ROLE_ADMIN'}"><a th:href="@{/admin/inventory/listInventory}">재고물품관리</a></li>
-							<li th:if="${session.userRole == 'ROLE_ADMIN'}"><a href="#">물품 입고 재고관리</a></li>
-							<li th:if="${session.userRole == 'ROLE_ADMIN'}"><a href="#">물품 출고 재고관리</a></li>
-						</ul></li>
+    <ul class="nav side-menu">
+      <li><a><i class="fa fa-adn"></i> 사업자관리
+        <span class="fa fa-chevron-down"></span></a>
+        <ul class="nav child_menu">
+          <li><a href="#">사업자관리</a></li>
+        </ul>
+      </li>
+    </ul>
 
-				</ul></li>
+    <ul class="nav side-menu">
+      <li><a><i class="fa fa-cube"></i> 재고관리
+        <span class="fa fa-chevron-down"></span></a>
+        <ul class="nav child_menu">
+          <li><a href="#">물류창고관리</a></li>
+          <li><a href="#">재고관리</a></li>
+          <li><a href="#">재고기록관리</a></li>
+        </ul>
+      </li>
+    </ul>
 
-			<li><a><i class="fa fa-mortar-board"></i> 게시판(이규노!) <span
-					class="fa fa-chevron-down"></span></a>
-				<ul class="nav child_menu">
-					<li><a th:href="@{/logistics/user/freeBoard}">자유게시판(이규노!)</a></li>
-				</ul></li>
-			<li><a><i class="fa fa-question"></i> FAQ(이규노#) <span
-					class="fa fa-chevron-down"></span></a>
-				<ul class="nav child_menu">
-					<li><a href="#">고객센터</a></li>
-				</ul></li>
-		</ul>
-	</div>
+    <ul class="nav side-menu">
+      <li><a><i class="fa fa-first-order"></i> 주문관리
+        <span class="fa fa-chevron-down"></span></a>
+        <ul class="nav child_menu">
+          <li><a href="#">주문상태</a></li>
+          <li><a href="#">주문품목</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <ul class="nav side-menu">
+      <li><a><i class="fa fa-car"></i> 운송관리
+        <span class="fa fa-chevron-down"></span></a>
+        <ul class="nav child_menu">
+          <li><a href="#">산적관리</a></li>
+          <li><a href="#">배송관리</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <ul class="nav side-menu">
+      <li><a><i class="fa fa-mortar-board"></i> 게시판
+        <span class="fa fa-chevron-down"></span></a>
+        <ul class="nav child_menu">
+          <li><a th:href="@{/logistics/user/freeBoard}">자유게시판</a></li>
+        </ul>
+      </li>
+    </ul>
+
+  </div>
 </div>
-
 </html>

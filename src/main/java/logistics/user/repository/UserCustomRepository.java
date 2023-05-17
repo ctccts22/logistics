@@ -5,4 +5,6 @@ import logistics.user.entity.User;
 public interface UserCustomRepository {
 
     User findByUsername(String username);
+
+    boolean existsByUsername(String username);
 }
