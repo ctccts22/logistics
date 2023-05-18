@@ -16,4 +16,7 @@ public class UserDTO {
     private LocalDateTime deleteDate;
     private LocalDateTime creationDate;
 
+    // 비밀번호 확인
+    private String newPassword;
+
 }

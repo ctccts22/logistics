@@ -45,6 +45,8 @@ public class EmailService implements EmailServiceImpl{
                 userFound = true;
                 String temporaryPassword = generateRandomPassword();
                 String hashedTemporaryPassword = passwordEncoder.encode(temporaryPassword);
+                log.info("임시 암호: {}", temporaryPassword);
+                log.info("임시 해쉬암호: {}", hashedTemporaryPassword);
                 user.setPassword(hashedTemporaryPassword);
                 userRepository.save(user);
                 sendEmailProtocol(user.getEmail(), "임시비밀번호", "임시비밀번호: " + temporaryPassword);

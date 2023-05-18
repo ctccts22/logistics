@@ -39,7 +39,7 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                         .requestMatchers("/build/**", "/images/**", "/css/**", "/js/**", "/vendors/**",
-                                "/users/login", "/users/register", "/users/idCheck").permitAll()
+                                "/users/login", "/users/register", "/users/idCheck", "/users/findPassword").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

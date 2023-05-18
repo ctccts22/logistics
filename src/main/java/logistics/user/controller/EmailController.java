@@ -32,7 +32,7 @@ public class EmailController {
     @GetMapping("/findPassword")
     public String userPasswordFind() {
         log.info("비밀번호 찾기 사용자 페이지 표시");
-        return "users/findPassword";
+        return "users/find_password";
     }
 
 }
