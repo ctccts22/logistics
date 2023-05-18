@@ -2,27 +2,24 @@ package logistics.user.controller;
 
 import logistics.user.dto.UserDTO;
 import logistics.user.service.UserService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 
 @Controller
 @Slf4j
+@AllArgsConstructor
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
     @GetMapping("/login")
-    public String login() {
+    public String login(@RequestParam(value = "error", required = false) String error, Model model) {
+        model.addAttribute("error", error != null);
         return "users/login";
     }
 
@@ -34,7 +31,6 @@ public class UserController {
         int cnt = userService.idCheck(username);
         return cnt;
     }
-
     /**
      * 회원가입
      */

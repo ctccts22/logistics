@@ -5,6 +5,8 @@ import logistics.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import java.util.List;
+
 @Slf4j
 public class UserCustomRepositoryImpl extends QuerydslRepositorySupport implements UserCustomRepository {
     private static final QUser qUser = QUser.user;
@@ -14,10 +16,18 @@ public class UserCustomRepositoryImpl extends QuerydslRepositorySupport implemen
     }
 
     @Override
+    public List<User> findByEmail(String email) {
+        return from(qUser)
+                .select(qUser)
+                .where(qUser.email.eq(email))
+                .fetch();
+    }
+
+    @Override
     public User findByUsername(String username) {
         return from(qUser)
-                .select(qUser).
-                where(qUser.username.eq(username))
+                .select(qUser)
+                .where(qUser.username.eq(username))
                 .fetchOne();
     }
 
