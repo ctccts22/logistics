@@ -5,6 +5,7 @@ import logistics.user.dto.UserDTO;
 public interface UserServiceImpl {
 
     int idCheck(String username);
-    UserDTO registerUser(UserDTO userDTO);
+    void registerUser(UserDTO userDTO);
+    void updateUserView(UserDTO userDTO);
 
 }

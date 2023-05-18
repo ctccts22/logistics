@@ -13,10 +13,8 @@ class LogisticsApplicationTests {
 
     @Test
     void jasypt() {
-        String url = "my_db_url";
-        String username = "my_db_username";
-        String password = "my_db_password";
-        System.out.println(jasyptEncoding(url));
+        String username = "username";
+        String password = "password";
         System.out.println(jasyptEncoding(username));
         System.out.println(jasyptEncoding(password));
     }
