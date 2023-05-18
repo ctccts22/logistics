@@ -7,11 +7,12 @@ import logistics.user.repository.RoleRepository;
 import logistics.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
@@ -66,6 +67,43 @@ public class UserService implements UserServiceImpl {
         user.setDeleteDate(userDTO.getDeleteDate());
 
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(UserDTO userDTO, String password, String newPassword) {
+        User user = userRepository.findByUsername(userDTO.getUsername());
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        log.info("현재 비밀번호길이: " + (password != null ? password.length() : "null"));
+        log.info("해쉬 암호길이: " + (user.getPassword() != null ? user.getPassword().length() : "null"));
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+        if(newPassword != null && !newPassword.isEmpty()) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+        }
+        user.setEmail(userDTO.getEmail());
+        user.setPhone(userDTO.getPhone());
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUser(UserDTO userDTO) {
+        User user = userRepository.findByUsername(userDTO.getUsername());
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        if (!passwordEncoder.matches(userDTO.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        } else {
+            user.setIsDeleted("Y");
+            user.setDeleteDate(LocalDateTime.now());
+            userRepository.save(user);
+        }
     }
 
 }

@@ -18,8 +18,8 @@
 					</a>
 					<div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
 						<a class="dropdown-item" th:href="@{/users/profileUser}"> 회원정보</a>
-						<a class="dropdown-item" th:href="@{/users/deleteUser/}"> 회원탈퇴</a>
-						<a class="dropdown-item" th:href="@{/users/modifyUser/}"> 회원정보수정</a>
+						<a class="dropdown-item" th:href="@{/users/deleteUser}"> 회원탈퇴</a>
+						<a class="dropdown-item" th:href="@{/users/updateUser}"> 회원정보수정</a>
 						<a class="dropdown-item" th:href="@{/logout}">
 							<i class="fa fa-sign-out pull-right"></i>
 							로그아웃
@@ -44,7 +44,7 @@
 					<a th:href="@{/users/register}" class="nav-link">회원가입</a>
 				</li>
 				<li class="nav-item" style="padding-left: 15px;">
-					<a th:href="@{/users/findPasswordUser}" class="nav-link">비밀번호 찾기</a>
+					<a th:href="@{/users/findPassword}" class="nav-link">비밀번호 찾기</a>
 				</li>
 			</ul>
 		</nav>
