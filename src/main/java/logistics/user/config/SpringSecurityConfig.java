@@ -41,6 +41,8 @@ public class SpringSecurityConfig {
                         .requestMatchers("/build/**", "/images/**", "/css/**", "/js/**", "/vendors/**",
                                 "/users/login", "/users/register", "/users/idCheck", "/users/findPassword").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/company/**").hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers("/warehouse/**").hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login

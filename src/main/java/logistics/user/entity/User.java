@@ -51,7 +51,7 @@ public class User {
     @PrePersist
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();
-        this.isDeleted = String.valueOf('N');
+        this.isDeleted = (this.isDeleted == null) ? "N" : this.isDeleted;
     }
 
 

@@ -18,16 +18,16 @@
       <li><a><i class="fa fa-adn"></i> 관리자페이지
         <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
-          <li><a href="#" th:href="@{/admin/users_view}"> 회원 관리</a></li>
+          <li><a href="#" th:href="@{/admin/userView}"> 회원 관리</a></li>
         </ul>
       </li>
     </ul>
 
     <ul class="nav side-menu">
-      <li><a><i class="fa fa-adn"></i> 사업자관리
+      <li><a><i class="fa fa-industry"></i> 사업자관리
         <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
-          <li><a href="#">사업자관리</a></li>
+          <li><a th:href="@{/company/companyView}">사업자관리</a></li>
         </ul>
       </li>
     </ul>
@@ -36,7 +36,7 @@
       <li><a><i class="fa fa-cube"></i> 재고관리
         <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
-          <li><a href="#">물류창고관리</a></li>
+          <li><a th:href="@{/warehouse/warehouseView}">물류창고관리</a></li>
           <li><a href="#">재고관리</a></li>
           <li><a href="#">재고기록관리</a></li>
         </ul>
@@ -67,7 +67,7 @@
       <li><a><i class="fa fa-mortar-board"></i> 게시판
         <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
-          <li><a th:href="@{/logistics/user/freeBoard}">자유게시판</a></li>
+          <li><a th:href="@{/users/freeBoard}">자유게시판</a></li>
         </ul>
       </li>
     </ul>

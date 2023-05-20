@@ -21,8 +21,8 @@ public class AdminController {
     private final UserService userService;
 
 
-    @GetMapping("/users_view")
-    public String userView(Model model) {
+    @GetMapping("/userView")
+    public String showUserViewForm(Model model) {
         List<User> users = userRepository.findAll();
         model.addAttribute("user", users);
         model.addAttribute("title", "회원관리");
@@ -33,7 +33,7 @@ public class AdminController {
     public String updateUser(@ModelAttribute("user") UserDTO userDTO) {
         try {
             userService.updateUserView(userDTO);
-            return "redirect:/admin/users_view";
+            return "redirect:/admin/userView";
         } catch (RuntimeException ex) {
             return "error";
         }
