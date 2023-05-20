@@ -15,6 +15,7 @@ public class UserCustomRepositoryImpl extends QuerydslRepositorySupport implemen
         super(User.class);
     }
 
+    // 리스트를 조회할때는 .fetch()
     @Override
     public List<User> findByEmail(String email) {
         return from(qUser)

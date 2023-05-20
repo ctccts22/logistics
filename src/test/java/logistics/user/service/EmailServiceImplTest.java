@@ -20,10 +20,10 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class EmailServiceTest {
+public class EmailServiceImplTest {
 
     @InjectMocks
-    private EmailService emailService;
+    private EmailServiceImpl emailService;
 
     @Mock
     private UserRepository userRepository;

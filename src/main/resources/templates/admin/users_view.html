@@ -14,8 +14,6 @@
               const roleName = row.find('td[data-key="roleName"]').text();
               const email = row.find('td[data-key="email"]').text();
               const phone = row.find('td[data-key="phone"]').text();
-              // const isDeleted = row.find('td[data-key="isDeleted"]').text();
-              // const deleteDate = row.find('td[data-key="deleteDate"]').text();
 
               Swal.fire({
                   title: '회원정보수정',
@@ -88,8 +86,9 @@
               });
           });
 
-          $('#datatable-custom').DataTable({});
+          $('#datatable-custom').DataTable({
 
+          });
       });
   </script>
 </th:block>
