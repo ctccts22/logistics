@@ -58,6 +58,53 @@
               });
           });
 
+          $('body').on('click', '.edit-button', function () {
+              const row = $(this).closest('tr');
+
+              const warehouseId = row.find('td[data-key="warehouseId"]').text();
+              const companyLocation = row.find('td[data-key="companyLocation"]').text();
+
+              Swal.fire({
+                  title: '창고주소수정',
+                  html:
+                      `<form id="edit-warehouse-form">
+                      <input  type="hidden" id="edit-warehouseId" name="warehouseId" value="${warehouseId}"/>
+                     <div class="form-group">
+                        <label for="edit-location">창고위치:</label>
+                        <input class="form-control" id="edit-location"
+                        name="location"
+                        value="${companyLocation}" type="text" />
+                      </div>
+                  </form>`,
+                  showCancelButton: true,
+                  confirmButtonText: '등록',
+                  cancelButtonText: '최소',
+                  preConfirm: () => {
+                      const form = document.getElementById('edit-warehouse-form');
+                      $.ajax({
+                          url: '/warehouse/updateWarehouseView',
+                          method: 'POST',
+                          data: {
+                              warehouseId: $('#edit-warehouseId').val(),
+                              location: $('#edit-location').val(),
+                          },
+                          success: function (response) {
+                              Swal.fire('Success!', '성공적으로 수정되었습니다.', 'success')
+                                  .then(() => {
+                                      location.reload();
+                                  });
+                          },
+                          error: function () {
+                              Swal.fire('Error!', '수정에 실패했습니다.', 'error');
+                          },
+                      });
+                  }
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                  }
+              });
+          });
+
           $('#datatable-custom').DataTable({});
       });
   </script>
@@ -110,16 +157,18 @@
                         <th>창고코드</th>
                         <th>사업자이름</th>
                         <th>창고주소</th>
-                        <th>수정</th>
+                        <th>삭제여부</th>
+                        <th>관리</th>
                       </tr>
                       </thead>
                       <tbody>
                       <tr class="odd" role="row" th:each="warehouses : ${warehouse}">
                         <td data-key="warehouseId" th:text="${warehouses.warehouseId}"></td>
                         <td data-key="companyName" th:text="${warehouses.company.companyName}"></td>
-                        <td data-key="location" th:text="${warehouses.location}"></td>
+                        <td data-key="companyLocation" th:text="${warehouses.location}"></td>
+                        <td data-key="companyIsDeleted" th:text="${warehouses.company.companyIsDeleted}"></td>
                         <td>
-                          <button class="btn btn-outline-secondary edit-button" type="button">수정/삭제</button>
+                          <button class="btn btn-outline-secondary edit-button" type="button">관리</button>
                         </td>
                       </tr>
                       </tbody>

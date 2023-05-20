@@ -1,0 +1,190 @@
+<html layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head></head>
+
+<th:block layout:fragment="customJs">
+  <script>
+      $(document).ready(function () {
+          $('body').on('click', '.add-button', function () {
+              const row = $(this).closest('tr');
+              const inventoryItemName = row.find('td[data-key="inventoryItemName"]').text();
+
+              Swal.fire({
+                  title: '재고등록',
+                  html:
+                      `<form id="add-inventoryItem-form">
+                      <div class="form-group">
+                          <label for="add-inventoryItemName">재고품목:</label>
+                          <input class="form-control" id="add-inventoryItemName"
+                                 name="inventoryItemName" value="${inventoryItemName}"
+                                 type="text"/>
+                      </div>
+                      <div class="form-group">
+                          <label for="add-inventoryItemDescription">재고내용:</label>
+                          <textarea class="form-control" id="add-inventoryItemDescription"
+                                 name="inventoryItemDescription" type="text"></textarea>
+                      </div>
+                  </form>`,
+                  showCancelButton: true,
+                  confirmButtonText: '등록',
+                  cancelButtonText: '최소',
+                  preConfirm: () => {
+                      const form = document.getElementById('add-inventoryItem-form');
+                      $.ajax({
+                          url: '/inventory/addInventoryItemView',
+                          method: 'POST',
+                          data: {
+                              inventoryItemId: $('#add-inventoryItemId').val(),
+                              inventoryItemName: $('#add-inventoryItemName').val(),
+                              inventoryItemDescription: $('#add-inventoryItemDescription').val(),
+                          },
+                          success: function (response) {
+                              Swal.fire('Success!', '성공적으로 등록되었습니다.', 'success')
+                                  .then(() => {
+                                      location.reload();
+                                  });
+                          },
+                          error: function () {
+                              Swal.fire('Error!', '수정에 등록했습니다.', 'error');
+                          },
+                      });
+                  }
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                  }
+              });
+          });
+      });
+
+
+      $('body').on('click', '.edit-button', function () {
+          const row = $(this).closest('tr');
+
+          const inventoryItemId = row.find('td[data-key="inventoryItemId"]').text();
+          const inventoryItemName = row.find('td[data-key="inventoryItemName"]').text();
+
+          Swal.fire({
+              title: '재고수정',
+              html:
+                  `<form id="edit-inventoryItem-form">
+                      <input  type="hidden" id="edit-inventoryItemId" name="inventoryItemId" value="${inventoryItemId}"/>
+                      <div class="form-group">
+                          <label for="edit-inventoryItemName">재고품목:</label>
+                          <input class="form-control" id="edit-inventoryItemName"
+                                 name="inventoryItemName" value="${inventoryItemName}"
+                                 type="text"/>
+                      </div>
+                      <div class="form-group">
+                          <label for="edit-inventoryItemDescription">재고내용:</label>
+                          <textarea class="form-control" id="edit-inventoryItemDescription"
+                                 name="inventoryItemDescription" type="text"></textarea>
+                      </div>
+                  </form>`,
+              showCancelButton: true,
+              confirmButtonText: '등록',
+              cancelButtonText: '최소',
+              preConfirm: () => {
+                  const form = document.getElementById('edit-inventoryItem-form');
+                  $.ajax({
+                      url: '/inventory/updateInventoryItemView',
+                      method: 'POST',
+                      data: {
+                          inventoryItemId: $('#edit-inventoryItemId').val(),
+                          inventoryItemName: $('#edit-inventoryItemName').val(),
+                          inventoryItemDescription: $('#edit-inventoryItemDescription').val(),
+                      },
+                      success: function (response) {
+                          Swal.fire('Success!', '성공적으로 수정되었습니다.', 'success')
+                              .then(() => {
+                                  location.reload();
+                              });
+                      },
+                      error: function () {
+                          Swal.fire('Error!', '수정에 실패했습니다.', 'error');
+                      },
+                  });
+              }
+          }).then((result) => {
+              if (result.isConfirmed) {
+              }
+          });
+      });
+
+      $('#datatable-custom').DataTable({});
+
+  </script>
+</th:block>
+
+<th:block layout:fragment="customContent">
+  <div class="page-title">
+    <div class="title">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2 class="my-4">재고관리</h2>
+
+          <ul class="nav navbar-right panel_toolbox" style="flex-direction: row-reverse">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li class="dropdown">
+              <div aria-labelledby="dropdownMenuButton" class="dropdown-menu">
+              </div>
+            </li>
+          </ul>
+
+          <div class="clearfix"></div>
+        </div>
+
+        <div style="display: flex;">
+          <button class="btn btn-outline-secondary add-button" type="submit">재고등록</button>
+        </div>
+
+        <div class="x_content">
+          <div class="row mb-3">
+            <div class="col-md-6">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card-box table-responsive">
+                <div class="col-sm-12">
+                  <div class="dataTables_wrapper container-fluid dt-bootstrap no-footer"
+                       id="datatable-buttons_wrapper">
+
+
+                    <table aria-describedby="datatable-buttons_info"
+                           class="table table-striped table-bordered dataTable no-footer dtr-inline"
+                           id="datatable-custom" role="grid"
+                           style="width: 100%;">
+
+                      <thead class="thead-dark">
+                      <tr role="row">
+                        <th>재고코드</th>
+                        <th>재고품목</th>
+                        <th>재고설명</th>
+                        <th>관리</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr class="odd" role="row" th:each="inventoryItems : ${inventoryItems}">
+                        <td data-key="inventoryItemId" th:text="${inventoryItems.inventoryItemId}"></td>
+                        <td data-key="inventoryItemName" th:text="${inventoryItems.inventoryItemName}"></td>
+                        <td data-key="inventoryItemDescription" th:text="${inventoryItems.inventoryItemDescription}"></td>
+                        <td>
+                          <button class="btn btn-outline-secondary edit-button" type="button">관리</button>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</th:block>
+</html>

@@ -15,6 +15,14 @@ public class UserCustomRepositoryImpl extends QuerydslRepositorySupport implemen
         super(User.class);
     }
 
+    // fetch Join으로 N+1 문제 해결가능
+//    JPAQuery<User> query = new JPAQuery<>(getEntityManager());
+//    List<User> users = query.select(user)
+//            .from(user)
+//            .innerJoin(user.role).fetchJoin()
+//            .where(user.username.eq(username))
+//            .fetch();
+
     // 리스트를 조회할때는 .fetch()
     @Override
     public List<User> findByEmail(String email) {

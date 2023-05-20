@@ -15,7 +15,7 @@ import java.util.Objects;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class WarehouseServiceImpl implements WarehouseService{
+public class WarehouseServiceImpl implements WarehouseService {
     private final CompanyCustomRepository companyRepository;
     private final WarehouseRepository warehouseRepository;
 
@@ -34,7 +34,18 @@ public class WarehouseServiceImpl implements WarehouseService{
         warehouse.setWarehouseId(warehouseDTO.getWarehouseId());
         warehouse.setCompany(company);
         warehouse.setLocation(warehouseDTO.getLocation());
-        warehouseRepository.save(warehouse);
 
+        warehouseRepository.save(warehouse);
+    }
+
+    @Override
+    @Transactional
+    public void updateWarehouseView(WarehouseDTO warehouseDTO) {
+        Warehouse existingWarehouse = warehouseRepository.findByWarehouseId(warehouseDTO.getWarehouseId());
+        if (existingWarehouse == null) {
+            throw new RuntimeException("Warehouse not found");
+        }
+        existingWarehouse.setLocation(warehouseDTO.getLocation());
+        warehouseRepository.save(existingWarehouse);
     }
 }
