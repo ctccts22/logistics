@@ -46,6 +46,11 @@ public class WarehouseController {
         warehouseService.addWarehouseView(warehouseDTO);
         return "redirect:/warehouse/warehouseView";
     }
+    @PostMapping("/updateWarehouseView")
+    public String updateWarehouse(@ModelAttribute("warehouse") WarehouseDTO warehouseDTO) {
+        warehouseService.updateWarehouseView(warehouseDTO);
+        return "redirect:/warehouse/warehouseView";
+    }
 
 
 }
