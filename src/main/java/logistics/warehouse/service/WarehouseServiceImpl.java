@@ -1,7 +1,8 @@
 package logistics.warehouse.service;
 
 import logistics.company.entity.Company;
-import logistics.company.repository.CompanyCustomRepository;
+import logistics.company.repository.CompanyRepository;
+import logistics.inventory.entity.InventoryItem;
 import logistics.warehouse.dto.WarehouseDTO;
 import logistics.warehouse.entity.Warehouse;
 import logistics.warehouse.repository.WarehouseRepository;
@@ -16,7 +17,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Slf4j
 public class WarehouseServiceImpl implements WarehouseService {
-    private final CompanyCustomRepository companyRepository;
+    private final CompanyRepository companyRepository;
     private final WarehouseRepository warehouseRepository;
 
     @Override
@@ -47,5 +48,15 @@ public class WarehouseServiceImpl implements WarehouseService {
         }
         existingWarehouse.setLocation(warehouseDTO.getLocation());
         warehouseRepository.save(existingWarehouse);
+    }
+
+    @Override
+    @Transactional
+    public void deleteWarehouse(Long warehouseId) {
+        // As same as optional
+        Warehouse warehouse = warehouseRepository.findById(warehouseId)
+                .orElseThrow(() -> new RuntimeException("warehouse item not found"));
+
+        warehouseRepository.delete(warehouse);
     }
 }

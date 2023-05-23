@@ -17,6 +17,7 @@ public class CompanyServiceImpl implements CompanyService {
     public void addCompanyView(CompanyDTO companyDTO) {
         Company company = new Company();
         company.setCompanyName(companyDTO.getCompanyName());
+        company.setCompanyType(companyDTO.getCompanyType());
         company.setCompanyLicense(companyDTO.getCompanyLicense());
         company.setCompanyAddress(companyDTO.getCompanyAddress());
 
@@ -31,6 +32,7 @@ public class CompanyServiceImpl implements CompanyService {
         }
 
         existingCompany.setCompanyName(companyDTO.getCompanyName());
+        existingCompany.setCompanyType(companyDTO.getCompanyType());
         existingCompany.setCompanyLicense(companyDTO.getCompanyLicense());
         existingCompany.setCompanyAddress(companyDTO.getCompanyAddress());
         existingCompany.setCompanyIsDeleted(companyDTO.getCompanyIsDeleted());

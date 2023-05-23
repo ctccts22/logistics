@@ -1,6 +1,8 @@
 package logistics.company.entity;
 
 import jakarta.persistence.*;
+import logistics.inventory.entity.InventoryItem;
+import logistics.user.entity.Role;
 import logistics.warehouse.entity.Warehouse;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -24,6 +26,10 @@ public class Company {
     @Column(name = "company_name", length = 50, nullable = false)
     private String companyName;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "company_type", nullable = false)
+    private Company.CompanyType companyType;
+
     @Column(name = "company_license", length = 50, nullable = false)
     private String companyLicense;
 
@@ -36,6 +42,10 @@ public class Company {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Warehouse> warehouses;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<InventoryItem> inventoryItems;
 
     @PrePersist
     protected void onCreate() {
@@ -53,6 +63,12 @@ public class Company {
     @Override
     public int hashCode() {
         return Objects.hash(companyId);
+    }
+
+    public enum CompanyType {
+        LOGISTICS_PROVIDER,
+        CUSTOMER,
+        SUPPLIER
     }
 
 }

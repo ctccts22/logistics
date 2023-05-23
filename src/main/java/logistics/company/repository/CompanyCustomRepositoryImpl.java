@@ -4,6 +4,7 @@ import logistics.company.entity.Company;
 import logistics.company.entity.QCompany;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+
 public class CompanyCustomRepositoryImpl extends QuerydslRepositorySupport implements CompanyCustomRepository {
 
     private static final QCompany qCompany = QCompany.company;
@@ -21,6 +22,7 @@ public class CompanyCustomRepositoryImpl extends QuerydslRepositorySupport imple
                 .fetchOne();
     }
 
+
     @Override
     public Company findByCompanyName(String companyName) {
         return from(qCompany)
@@ -28,4 +30,5 @@ public class CompanyCustomRepositoryImpl extends QuerydslRepositorySupport imple
                 .where(qCompany.companyName.eq(companyName))
                 .fetchOne();
     }
+
 }

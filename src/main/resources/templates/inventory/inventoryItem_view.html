@@ -4,11 +4,17 @@
 <head></head>
 
 <th:block layout:fragment="customJs">
-  <script>
+  <script th:inline="javascript">
       $(document).ready(function () {
+          const companies = [[${companyNames}]];
           $('body').on('click', '.add-button', function () {
               const row = $(this).closest('tr');
               const inventoryItemName = row.find('td[data-key="inventoryItemName"]').text();
+
+              let selectOptions = '';
+              for (let i = 0; i < companies.length; i++) {
+                  selectOptions += `<option value="${companies[i]}">${companies[i]}</option>`;
+              }
 
               Swal.fire({
                   title: '재고등록',
@@ -19,6 +25,12 @@
                           <input class="form-control" id="add-inventoryItemName"
                                  name="inventoryItemName" value="${inventoryItemName}"
                                  type="text"/>
+                      </div>
+                      <div class="form-group">
+                        <label for="add-companyName">공급자:</label>
+                        <select class="form-control" id="add-companyName" name="companyName">
+                          ${selectOptions}
+                        </select>
                       </div>
                       <div class="form-group">
                           <label for="add-inventoryItemDescription">재고내용:</label>
@@ -37,6 +49,7 @@
                           data: {
                               inventoryItemId: $('#add-inventoryItemId').val(),
                               inventoryItemName: $('#add-inventoryItemName').val(),
+                              companyName: $('#add-companyName').val(),
                               inventoryItemDescription: $('#add-inventoryItemDescription').val(),
                           },
                           success: function (response) {
@@ -60,20 +73,30 @@
 
       $('body').on('click', '.edit-button', function () {
           const row = $(this).closest('tr');
+          const companies = [[${companyNames}]];
 
           const inventoryItemId = row.find('td[data-key="inventoryItemId"]').text();
           const inventoryItemName = row.find('td[data-key="inventoryItemName"]').text();
 
+          let selectOptions = '';
+          for (let i = 0; i < companies.length; i++) {
+              selectOptions += `<option value="${companies[i]}">${companies[i]}</option>`;
+          }
           Swal.fire({
               title: '재고수정',
               html:
                   `<form id="edit-inventoryItem-form">
-                      <input  type="hidden" id="edit-inventoryItemId" name="inventoryItemId" value="${inventoryItemId}"/>
                       <div class="form-group">
                           <label for="edit-inventoryItemName">재고품목:</label>
                           <input class="form-control" id="edit-inventoryItemName"
                                  name="inventoryItemName" value="${inventoryItemName}"
                                  type="text"/>
+                      </div>
+                       <div class="form-group">
+                        <label for="edit-companyName">공급자:</label>
+                        <select class="form-control" id="edit-companyName" name="companyName">
+                          ${selectOptions}
+                        </select>
                       </div>
                       <div class="form-group">
                           <label for="edit-inventoryItemDescription">재고내용:</label>
@@ -90,8 +113,8 @@
                       url: '/inventory/updateInventoryItemView',
                       method: 'POST',
                       data: {
-                          inventoryItemId: $('#edit-inventoryItemId').val(),
                           inventoryItemName: $('#edit-inventoryItemName').val(),
+                          companyName: $('#edit-companyName').val(),
                           inventoryItemDescription: $('#edit-inventoryItemDescription').val(),
                       },
                       success: function (response) {
@@ -111,7 +134,44 @@
           });
       });
 
-      $('#datatable-custom').DataTable({});
+      $('body').on('click', '.delete-button', function () {
+          const row = $(this).closest('tr');
+          const inventoryItemId = row.find('td[data-key="inventoryItemId"]').text();
+
+          Swal.fire({
+              title: '삭제',
+              text: "재고물품을 삭제합니다",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: '삭제',
+              cancelButtonText: '취소'
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  $.ajax({
+                      url: '/inventory/deleteInventoryItemView',
+                      method: 'POST',
+                      data: {
+                          inventoryItemId: inventoryItemId
+                      },
+                      success: function (response) {
+                          Swal.fire('삭제!', '재고물품이 성공적으로 삭제되었습니다.', 'success')
+                              .then(() => {
+                                  location.reload();
+                              });
+                      },
+                      error: function () {
+                          Swal.fire('에러!', '삭제 실패', 'error');
+                      }
+                  });
+              }
+          });
+      });
+
+      $('#datatable-custom').DataTable({
+
+      });
 
   </script>
 </th:block>
@@ -161,6 +221,7 @@
                       <thead class="thead-dark">
                       <tr role="row">
                         <th>재고코드</th>
+                        <th>공급자</th>
                         <th>재고품목</th>
                         <th>재고설명</th>
                         <th>관리</th>
@@ -169,10 +230,12 @@
                       <tbody>
                       <tr class="odd" role="row" th:each="inventoryItems : ${inventoryItems}">
                         <td data-key="inventoryItemId" th:text="${inventoryItems.inventoryItemId}"></td>
+                        <td data-key="companyName" th:text="${inventoryItems.company.companyName}"></td>
                         <td data-key="inventoryItemName" th:text="${inventoryItems.inventoryItemName}"></td>
                         <td data-key="inventoryItemDescription" th:text="${inventoryItems.inventoryItemDescription}"></td>
                         <td>
                           <button class="btn btn-outline-secondary edit-button" type="button">관리</button>
+                          <button class="btn btn-outline-danger delete-button" type="button">삭제</button>
                         </td>
                       </tr>
                       </tbody>
