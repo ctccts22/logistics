@@ -105,6 +105,42 @@
               });
           });
 
+          $('body').on('click', '.delete-button', function () {
+              const row = $(this).closest('tr');
+              const warehouseId = row.find('td[data-key="warehouseId"]').text();
+
+              Swal.fire({
+                  title: '삭제',
+                  text: "재고물품을 삭제합니다",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: '삭제',
+                  cancelButtonText: '취소'
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                      $.ajax({
+                          url: '/warehouse/deleteWarehouseView',
+                          method: 'POST',
+                          data: {
+                              warehouseId: warehouseId
+                          },
+                          success: function (response) {
+                              Swal.fire('삭제!', '창고기록이 성공적으로 삭제되었습니다.', 'success')
+                                  .then(() => {
+                                      location.reload();
+                                  });
+                          },
+                          error: function () {
+                              Swal.fire('에러!', '삭제 실패', 'error');
+                          }
+                      });
+                  }
+              });
+          });
+
+
           $('#datatable-custom').DataTable({});
       });
   </script>
@@ -157,7 +193,6 @@
                         <th>창고코드</th>
                         <th>사업자이름</th>
                         <th>창고주소</th>
-                        <th>삭제여부</th>
                         <th>관리</th>
                       </tr>
                       </thead>
@@ -166,9 +201,9 @@
                         <td data-key="warehouseId" th:text="${warehouses.warehouseId}"></td>
                         <td data-key="companyName" th:text="${warehouses.company.companyName}"></td>
                         <td data-key="companyLocation" th:text="${warehouses.location}"></td>
-                        <td data-key="companyIsDeleted" th:text="${warehouses.company.companyIsDeleted}"></td>
                         <td>
                           <button class="btn btn-outline-secondary edit-button" type="button">관리</button>
+                          <button class="btn btn-outline-danger delete-button" type="button">삭제</button>
                         </td>
                       </tr>
                       </tbody>

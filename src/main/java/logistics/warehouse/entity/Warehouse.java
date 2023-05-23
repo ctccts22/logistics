@@ -2,9 +2,11 @@ package logistics.warehouse.entity;
 
 import jakarta.persistence.*;
 import logistics.company.entity.Company;
+import logistics.inventory.entity.InventoryRecord;
 import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -27,6 +29,10 @@ public class Warehouse {
 
     @Column(name = "location", length = 100, nullable = false)
     private String location;
+
+    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<InventoryRecord> inventoryRecords;
 
     @Override
     public boolean equals(Object o) {

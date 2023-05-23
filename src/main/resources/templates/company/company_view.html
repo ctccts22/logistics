@@ -25,6 +25,15 @@
                                  name="companyName" value="${companyName}"
                                  type="text"/>
                       </div>
+                        <div class="form-group">
+                          <label for="add-companyType">사업자종류:</label>
+                            <select class="form-control" id="add-companyType"
+                          name="companyType">
+                              <option value="LOGISTICS_PROVIDER">물류회사</option>
+                              <option value="CUSTOMER">바이어</option>
+                              <option value="SUPPLIER">공급회사</option>
+                            </select>
+                      </div>
                       <div class="form-group">
                           <label for="add-companyLicense">사업자번호:</label>
                           <input class="form-control" id="add-companyLicense"
@@ -49,6 +58,7 @@
                           data: {
                               companyId: $('#add-companyId').val(),
                               companyName: $('#add-companyName').val(),
+                              companyType: $('#add-companyType').val(),
                               companyLicense: $('#add-companyLicense').val(),
                               companyAddress: $('#add-companyAddress').val(),
                           },
@@ -90,6 +100,15 @@
                                  name="companyName" value="${companyName}"
                                  type="text"/>
                       </div>
+                       <div class="form-group">
+                          <label for="edit-companyType">사업자종류:</label>
+                            <select class="form-control" id="edit-companyType"
+                          name="companyType">
+                              <option value="LOGISTICS_PROVIDER">물류회사</option>
+                              <option value="CUSTOMER">바이어</option>
+                              <option value="SUPPLIER">공급회사</option>
+                            </select>
+                      </div>
                       <div class="form-group">
                           <label for="edit-companyLicense">사업자번호:</label>
                           <input class="form-control" id="edit-companyLicense"
@@ -122,6 +141,7 @@
                       data: {
                           companyId: $('#edit-companyId').val(),
                           companyName: $('#edit-companyName').val(),
+                          companyType: $('#edit-companyType').val(),
                           companyLicense: $('#edit-companyLicense').val(),
                           companyAddress: $('#edit-companyAddress').val(),
                           companyIsDeleted: $('#edit-companyIsDeleted').val(),
@@ -193,6 +213,7 @@
                       <tr role="row">
                         <th>사업자코드</th>
                         <th>사업자이름</th>
+                        <th>사업자종류</th>
                         <th>사업자번호</th>
                         <th>사업자주소</th>
                         <th>탈퇴여부</th>
@@ -203,6 +224,7 @@
                       <tr class="odd" role="row" th:each="company : ${company}">
                         <td data-key="companyId" th:text="${company.companyId}"></td>
                         <td data-key="companyName" th:text="${company.companyName}"></td>
+                        <td data-key="companyType" th:text="${company.companyType}"></td>
                         <td data-key="companyLicense" th:text="${company.companyLicense}"></td>
                         <td data-key="companyAddress" th:text="${company.companyAddress}"></td>
                         <td data-key="companyIsDeleted" th:text="${company.companyIsDeleted}"></td>

@@ -22,4 +22,12 @@ public class InventoryItemCustomRepositoryImpl extends QuerydslRepositorySupport
                 .where(qInventoryItem.inventoryItemId.eq(inventoryItemId))
                 .fetchOne();
     }
+
+    @Override
+    public InventoryItem findByInventoryItemName(String inventoryItemName) {
+        return from(qInventoryItem)
+                .select(qInventoryItem)
+                .where(qInventoryItem.inventoryItemName.eq(inventoryItemName))
+                .fetchOne();
+    }
 }

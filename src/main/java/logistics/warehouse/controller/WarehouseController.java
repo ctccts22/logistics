@@ -52,5 +52,10 @@ public class WarehouseController {
         return "redirect:/warehouse/warehouseView";
     }
 
+    @PostMapping("/deleteWarehouseView")
+    public String deleteWarehouse(@RequestParam Long warehouseId) {
+        warehouseService.deleteWarehouse(warehouseId);
+        return "redirect:/warehouse/warehouseView";
+    }
 
 }

@@ -1,12 +1,11 @@
 package logistics.inventory.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import logistics.company.entity.Company;
+import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -25,8 +24,17 @@ public class InventoryItem {
     @Column(name = "item_name", length = 50, nullable = false)
     private String inventoryItemName;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = false)
+    @ToString.Exclude
+    private Company company;
+
     @Column(name = "item_description", nullable = true)
     private String inventoryItemDescription;
+
+    @OneToMany(mappedBy = "inventoryItem", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<InventoryRecord> inventoryRecords;
 
 
     @Override
