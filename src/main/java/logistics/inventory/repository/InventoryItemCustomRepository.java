@@ -8,4 +8,5 @@ public interface InventoryItemCustomRepository {
 
     InventoryItem findByInventoryItemName(String inventoryItemName);
 
+
 }
