@@ -1,5 +1,6 @@
 package logistics.inventory.repository;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import logistics.inventory.entity.InventoryRecord;
 import logistics.inventory.entity.QInventoryRecord;
 import lombok.extern.slf4j.Slf4j;

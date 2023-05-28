@@ -2,6 +2,7 @@ package logistics.company.entity;
 
 import jakarta.persistence.*;
 import logistics.inventory.entity.InventoryItem;
+import logistics.order.entity.Order;
 import logistics.user.entity.Role;
 import logistics.warehouse.entity.Warehouse;
 import lombok.*;
@@ -46,6 +47,10 @@ public class Company {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<InventoryItem> inventoryItems;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<Order> orders;
 
     @PrePersist
     protected void onCreate() {

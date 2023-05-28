@@ -2,6 +2,7 @@ package logistics.inventory.entity;
 
 import jakarta.persistence.*;
 import logistics.company.entity.Company;
+import logistics.order.entity.OrderItem;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -36,6 +37,9 @@ public class InventoryItem {
     @ToString.Exclude
     private List<InventoryRecord> inventoryRecords;
 
+    @OneToMany(mappedBy = "inventoryItem", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<OrderItem> orderItems;
 
     @Override
     public boolean equals(Object o) {

@@ -33,7 +33,7 @@ public class InventoryRecord {
     private Warehouse warehouse;
 
     @Column(name = "quantity", nullable = false)
-    private String inventoryRecordQuantity;
+    private int inventoryRecordQuantity;
 
     @Column(name = "last_update")
     private LocalDateTime inventoryRecordLastUpdate;
