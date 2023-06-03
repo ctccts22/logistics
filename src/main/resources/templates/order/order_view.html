@@ -4,29 +4,29 @@
 <head></head>
 
 <th:block layout:fragment="customJs">
-<script th:inline="javascript">
-    $(document).ready(function () {
-        const companies = [[${companyNames}]];
-        const inventoryItems = [[${inventoryItemNames}]];
+  <script th:inline="javascript">
+      $(document).ready(function () {
+          const companies = [[${companyNames}]];
+          const inventoryItems = [[${inventoryItemNames}]];
 
-        $('body').on('click', '.add-button', function () {
+          $('body').on('click', '.add-button', function () {
 
-            let selectCompanyOptions = '';
-            for (let i = 0; i < companies.length; i++) {
-                selectCompanyOptions += `<option value="${companies[i]}">${companies[i]}</option>`;
-            }
+              let selectCompanyOptions = '';
+              for (let i = 0; i < companies.length; i++) {
+                  selectCompanyOptions += `<option value="${companies[i]}">${companies[i]}</option>`;
+              }
 
-            let selectInventoryOptions = '';
-            for (let i = 0; i < inventoryItems.length; i++) {
-                selectInventoryOptions += `<option value="${inventoryItems[i]}">${inventoryItems[i]}</option>`;
-            }
+              let selectInventoryOptions = '';
+              for (let i = 0; i < inventoryItems.length; i++) {
+                  selectInventoryOptions += `<option value="${inventoryItems[i]}">${inventoryItems[i]}</option>`;
+              }
 
-            Swal.fire({
-                title: '주문등록',
-                html: `
+              Swal.fire({
+                  title: '주문등록',
+                  html: `
           <div id="add-order-form">
             <div class="form-group">
-              <label for="add-companyName">공급자:</label>
+              <label for="add-companyName">주문자:</label>
               <select class="form-control" id="add-companyName" name="companyName">
                 ${selectCompanyOptions}
               </select>
@@ -42,40 +42,90 @@
               <input class="form-control" id="add-quantity" name="orderItemQuantity" type="number" />
             </div>
           </div>`,
-                showCancelButton: true,
-                confirmButtonText: '등록',
-                cancelButtonText: '최소',
-                preConfirm: () => {
-                    $.ajax({
-                        url: '/order/addOrderView',
-                        method: 'POST',
-                        contentType: 'application/json',
-                            data: JSON.stringify ({
-                                companyName: $('#add-companyName').val(),
-                                orderDate: $('#add-orderDate').val(),
-                                orderStatus: $('#add-orderStatus').val(),
-                                orderItemDTOS: [{
-                                    inventoryItemId: $('#add-inventoryItemId').val(),
-                                    inventoryItemName: $('#add-inventoryItemName').val(),
-                                    orderItemQuantity: $('#add-quantity').val()
-                                }]
-                        }),
-                        success: function () {
-                            Swal.fire('Success!', '성공적으로 등록되었습니다.', 'success')
-                                .then(() => {
-                                    location.reload();
-                                });
-                        },
-                        error: function () {
-                            Swal.fire('Error!', '에러', 'error');
-                        },
-                    });
-                }
-            });
-        });
-        $('#datatable-custom').DataTable({});
-    });
-</script>
+                  showCancelButton: true,
+                  confirmButtonText: '등록',
+                  cancelButtonText: '최소',
+                  preConfirm: () => {
+                      $.ajax({
+                          url: '/order/addOrderView',
+                          method: 'POST',
+                          contentType: 'application/json',
+                          data: JSON.stringify({
+                              companyName: $('#add-companyName').val(),
+                              orderDate: $('#add-orderDate').val(),
+                              orderStatus: $('#add-orderStatus').val(),
+                              orderItemDTOS: [{
+                                  inventoryItemId: $('#add-inventoryItemId').val(),
+                                  inventoryItemName: $('#add-inventoryItemName').val(),
+                                  orderItemQuantity: $('#add-quantity').val()
+                              }]
+                          }),
+                          success: function () {
+                              Swal.fire('Success!', '성공적으로 등록되었습니다.', 'success')
+                                  .then(() => {
+                                      location.reload();
+                                  });
+                          },
+                          error: function () {
+                              Swal.fire('Error!', '에러', 'error');
+                          },
+                      });
+                  }
+              });
+          });
+
+              $('body').on('click', '.edit-button', function () {
+                  const row = $(this).closest('tr');
+                  const orderId = row.find('td[data-key="orderId"]').text();
+                  Swal.fire({
+                      title: '주문상세',
+                      html: `
+          <div id="edit-order-form">
+           <input type="hidden" id="edit-orderId" name="orderId" value="${orderId}" />
+            <div class="form-group">
+              <label for="edit-quantity">배송날짜:</label>
+              <input class="form-control" id="edit-orderDeliveryDate" name="orderDeliveryDate" type="date" />
+            </div>
+             <div class="form-group">
+                   <select class="form-control" id="edit-orderStatus"
+                          name="orderStatus">
+                      <option value="PENDING">보류</option>
+                      <option value="PROCESSING">진행중</option>
+                      <option value="DELIVERED">배송</option>
+                  </select>
+            </div>
+          </div>`,
+                      showCancelButton: true,
+                      confirmButtonText: '등록',
+                      cancelButtonText: '최소',
+                      preConfirm: () => {
+                          $.ajax({
+                              url: '/order/updateOrderView',
+                              method: 'POST',
+                              contentType: 'application/json',
+                              data: JSON.stringify({
+                                  orderId: $('#edit-orderId').val(),
+                                  orderStatus: $('#edit-orderStatus').val(),
+                                  orderDeliveryDate: $('#edit-orderDeliveryDate').val()
+                              }),
+                              success: function () {
+                                  Swal.fire('Success!', '성공적으로 등록되었습니다.', 'success')
+                                      .then(() => {
+                                          location.reload();
+                                      });
+                              },
+                              error: function () {
+                                  Swal.fire('Error!', '에러', 'error');
+                              },
+                          });
+                      }
+                  });
+              });
+          });
+
+
+          $('#datatable-custom').DataTable({});
+  </script>
 </th:block>
 
 <th:block layout:fragment="customContent">
@@ -143,7 +193,6 @@
                         <td data-key="orderItemQuantity" th:text="${order.orderItemQuantity}"></td>
                         <td>
                           <button class="btn btn-outline-secondary edit-button" type="button">관리</button>
-                          <button class="btn btn-outline-danger delete-button" type="button">삭제</button>
                         </td>
                       </tr>
                       </tbody>

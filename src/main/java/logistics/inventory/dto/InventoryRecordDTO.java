@@ -10,6 +10,8 @@ public class InventoryRecordDTO {
     private Long inventoryRecordId;
     private Long inventoryItemId;
     private Long warehouseId;
+    private String inventoryItemName;
+    private String warehouseLocation;
     private int inventoryRecordQuantity;
     private LocalDateTime inventoryRecordLastUpdate;
 }
