@@ -2,7 +2,6 @@ package logistics.order.entity;
 
 import jakarta.persistence.*;
 import logistics.company.entity.Company;
-import logistics.inventory.entity.InventoryRecord;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -38,7 +37,8 @@ public class Order {
     @Column(name = "status", nullable = false)
     private Order.orderStatus orderStatus;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // order update 발생하는 에러 해결
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<OrderItem> orderItems;
 

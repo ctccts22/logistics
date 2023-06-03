@@ -8,4 +8,5 @@ public interface OrderService {
 
     void addOrderView(OrderDTO orderDTO);
 
+    void updateOrderView(OrderDTO orderDTO);
 }

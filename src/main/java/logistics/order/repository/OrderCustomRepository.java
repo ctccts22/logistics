@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface OrderCustomRepository {
 
-    public List<OrderViewDTO> fetchAllOrdersWithOrderItems();
+    List<OrderViewDTO> fetchAllOrdersWithOrderItems();
 }

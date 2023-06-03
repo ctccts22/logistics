@@ -61,6 +61,12 @@ public class OrderController {
         log.info("orderDTO2 :{}", orderDTO);
         return "redirect:/order/orderView";
     }
-
+    @PostMapping("/updateOrderView")
+    @ResponseBody
+    public String updateOrder(@RequestBody OrderDTO orderDTO) {
+        log.info("orderDTO :{}", orderDTO);
+        orderService.updateOrderView(orderDTO);
+        return "redirect:/order/orderView";
+    }
 
 }
