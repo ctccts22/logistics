@@ -2,12 +2,11 @@ package logistics.vehicle.entity;
 
 import jakarta.persistence.*;
 import logistics.order.entity.Order;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import logistics.shipment.entity.Shipment;
+import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -29,6 +28,10 @@ public class Vehicle {
     @Enumerated(EnumType.STRING)
     @Column(name = "vehicle_status", nullable = false)
     private Vehicle.vehicleStatus vehicleStatus;
+
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<Shipment> shipments;
 
     @Override
     public boolean equals(Object o) {
