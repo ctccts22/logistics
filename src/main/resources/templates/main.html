@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layout/default}">
-	<head>
-	
-	</head>
-	<th:block layout:fragment="customContent">
+			xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+			layout:decorate="~{layout/default}">
+<head>
+</head>
+</head>
+<th:block layout:fragment="customJs">
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+		<script>
+			new Vue({
+				el: '#vue-app',
+				data: {
+					message: 'Hello Vue!',
+					intro: '메인화면은 Vue.js를 이용해서 꾸밀 예정입니다.'
+				}
+			})
+		</script>
+</th:block>
+<th:block layout:fragment="customContent">
+	<div id="vue-app" class="container-fluid">
 		<div class="page-title">
 			<div class="title_center">
-
-				<main>
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-md-8 offset-md-2">
-
-
-
-							</div>
-						</div>
-					</div>
-				</main>
-
 			</div>
 		</div>
-	</th:block>
+		<p>{{ message }}</p>
+		<p>{{ intro }}</p>
+	</div>
+</th:block>
 </html>
