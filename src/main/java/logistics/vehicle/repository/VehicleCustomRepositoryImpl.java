@@ -19,4 +19,12 @@ public class VehicleCustomRepositoryImpl extends QuerydslRepositorySupport imple
                 .where(qVehicle.vehicleId.eq(vehicleId))
                 .fetchOne();
     }
+
+    @Override
+    public Vehicle findByVehicleType(String vehicleType) {
+        return from(qVehicle)
+                .select(qVehicle)
+                .where(qVehicle.vehicleType.eq(vehicleType))
+                .fetchOne();
+    }
 }

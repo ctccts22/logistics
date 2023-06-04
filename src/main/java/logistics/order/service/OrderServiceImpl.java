@@ -74,19 +74,6 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
     }
 
-//    @Override
-//    public void updateOrderView(OrderDTO orderDTO) {
-//        Order existingOrder = orderRepository.findById(orderDTO.getOrderId())
-//                .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + orderDTO.getOrderId()));
-//
-//        existingOrder.setOrderDeliveryDate(orderDTO.getOrderDeliveryDate());
-//        existingOrder.setOrderStatus(orderDTO.getOrderStatus());
-//
-//        orderRepository.save(existingOrder);
-//    }
-
-
-
     @Override
     @Transactional
     public void updateOrderView(OrderDTO orderDTO) {

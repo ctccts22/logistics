@@ -41,4 +41,12 @@ public class OrderCustomRepositoryImpl extends QuerydslRepositorySupport impleme
                 .fetch();
     }
 
+    @Override
+    public Order findByOrderId(Long orderId) {
+        return from(qOrder)
+                .select(qOrder)
+                .where(qOrder.orderId.eq(orderId))
+                .fetchOne();
+    }
+
 }
