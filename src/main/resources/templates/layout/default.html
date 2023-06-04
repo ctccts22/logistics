@@ -44,7 +44,8 @@
 					<div class="profile clearfix">
 						<div class="profile_info">
 							<span style="font-size: 24px; font-weight: bold; color: #ffffff;"></span>
-							<h2>User Name</h2>
+							<h6>유저 아이디 : </h6><p th:text="${#authentication.name}"></p>
+							<h6>유저 권한 : </h6><p th:text="${#authentication.authorities}"></p>
 						</div>
 					</div>
 
