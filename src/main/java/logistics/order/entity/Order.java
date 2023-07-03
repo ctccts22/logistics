@@ -15,7 +15,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Order {
 
     @Id
@@ -58,6 +57,17 @@ public class Order {
     @Override
     public int hashCode() {
         return Objects.hash(orderId);
+    }
+
+    @Builder
+    public Order(Long orderId, Company company, Date orderDate, Date orderDeliveryDate, Order.orderStatus orderStatus, List<OrderItem> orderItems, List<Shipment> shipments) {
+        this.orderId = orderId;
+        this.company = company;
+        this.orderDate = orderDate;
+        this.orderDeliveryDate = orderDeliveryDate;
+        this.orderStatus = orderStatus;
+        this.orderItems = orderItems;
+        this.shipments = shipments;
     }
 
     public enum orderStatus {

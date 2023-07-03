@@ -14,7 +14,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class InventoryRecord {
 
     @Id
@@ -44,6 +43,15 @@ public class InventoryRecord {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         InventoryRecord inventoryRecord = (InventoryRecord) o;
         return Objects.equals(inventoryRecordId, inventoryRecord.inventoryRecordId);
+    }
+
+    @Builder
+    public InventoryRecord(Long inventoryRecordId, InventoryItem inventoryItem, Warehouse warehouse, int inventoryRecordQuantity, LocalDateTime inventoryRecordLastUpdate) {
+        this.inventoryRecordId = inventoryRecordId;
+        this.inventoryItem = inventoryItem;
+        this.warehouse = warehouse;
+        this.inventoryRecordQuantity = inventoryRecordQuantity;
+        this.inventoryRecordLastUpdate = inventoryRecordLastUpdate;
     }
 
     @Override

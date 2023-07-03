@@ -14,7 +14,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Vehicle {
 
     @Id
@@ -44,6 +43,14 @@ public class Vehicle {
     @Override
     public int hashCode() {
         return Objects.hash(vehicleId);
+    }
+
+    @Builder
+    public Vehicle(Long vehicleId, String vehicleType, Vehicle.vehicleStatus vehicleStatus, List<Shipment> shipments) {
+        this.vehicleId = vehicleId;
+        this.vehicleType = vehicleType;
+        this.vehicleStatus = vehicleStatus;
+        this.shipments = shipments;
     }
 
     public enum vehicleStatus {

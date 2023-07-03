@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<th:block layout:fragment="customJs">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const updatedSuccess = [[${updatedSuccess != null}]];
+        const error = [[${error != null}]];
+
+        if (updatedSuccess) {
+            Swal.fire(
+                '성공!',
+                '게시글이 수정되었습니다.',
+                'success'
+            )
+        } else if (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '웁스...',
+                text: '에러입니다.'
+            })
+        }
+        /*]]>*/
+    </script>
+</th:block>
+
+<th:block layout:fragment="customContent">
+  <div class="container">
+
+    <div class="py-5 text-center">
+      <h2 th:text="#{page.board}">게시판 상세</h2>
+    </div>
+
+    <!-- 추가 -->
+    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
+
+    <div>
+      <label for="boardId" th:text="#{label.board.id}">ID</label>
+      <input class="form-control" id="boardId" name="id" readonly th:value="${board.id}" type="text">
+    </div>
+    <div>
+      <label for="boardTitle" th:text="#{label.board.title}">제목</label>
+      <input class="form-control" id="boardTitle" name="title" readonly th:value="${board.title}" type="text">
+    </div>
+    <div>
+      <label for="writer" th:text="#{label.board.writer}">작성자</label>
+      <input class="form-control" id="writer" name="writer" readonly th:value="${board.writer}" type="text">
+    </div>
+    <div>
+      <label for="view" th:text="#{label.board.view}">조회수</label>
+      <input class="form-control" id="view" name="view" readonly th:value="${board.view}" type="text">
+    </div>
+
+    <div>
+      <label for="regDate" th:text="#{label.board.regDate}">등록일</label>
+      <input class="form-control" id="regDate" name="regDate" readonly th:value="${board.regDate}" type="text">
+    </div>
+
+    <div>
+      <label for="content" th:text="#{label.board.content}">글 내용</label>
+      <textarea class="form-control" id="content" name="content" readonly th:text="${board.content}">Default content</textarea>
+    </div>
+
+
+    <hr class="my-4">
+
+    <div class="row">
+      <div class="col">
+        <button class="w-100 btn btn-primary btn-lg"
+                th:onclick="|location.href='@{/board/{id}/updateBoard(id=${board.id})}'|"
+                th:text="#{page.updateBoard}" type="button">글 수정
+        </button>
+      </div>
+      <div class="col">
+        <button class="w-100 btn btn-secondary btn-lg"
+                th:onclick="|location.href='@{/board/boardView}'|"
+                th:text="#{button.list}" type="button">목록으로
+        </button>
+      </div>
+
+      <div class="col">
+        <button class="w-100 btn btn-secondary btn-lg"
+                th:onclick="|location.href='@{/board/{id}/deleteBoard(id=${board.id})}'|"
+                th:text="#{button.delete}" type="button">삭제
+        </button>
+      </div>
+    </div>
+
+  </div> <!-- /container -->
+</th:block>
+</html>

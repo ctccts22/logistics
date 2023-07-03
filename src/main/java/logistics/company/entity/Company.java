@@ -16,7 +16,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Company {
 
     @Id
@@ -68,6 +67,19 @@ public class Company {
     @Override
     public int hashCode() {
         return Objects.hash(companyId);
+    }
+
+    @Builder
+    public Company(Long companyId, String companyName, CompanyType companyType, String companyLicense, String companyAddress, String companyIsDeleted, List<Warehouse> warehouses, List<InventoryItem> inventoryItems, List<Order> orders) {
+        this.companyId = companyId;
+        this.companyName = companyName;
+        this.companyType = companyType;
+        this.companyLicense = companyLicense;
+        this.companyAddress = companyAddress;
+        this.companyIsDeleted = companyIsDeleted;
+        this.warehouses = warehouses;
+        this.inventoryItems = inventoryItems;
+        this.orders = orders;
     }
 
     public enum CompanyType {

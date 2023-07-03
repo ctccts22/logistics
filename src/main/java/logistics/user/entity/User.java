@@ -12,9 +12,7 @@ import java.util.Objects;
 @Table(name = "users")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
-@AllArgsConstructor
 public class User {
 
     @Id
@@ -54,6 +52,18 @@ public class User {
         this.isDeleted = (this.isDeleted == null) ? "N" : this.isDeleted;
     }
 
+    @Builder
+    public User(Long id, String username, String password, Role role, String email, String phone, String isDeleted, LocalDateTime deleteDate, LocalDateTime creationDate) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.email = email;
+        this.phone = phone;
+        this.isDeleted = isDeleted;
+        this.deleteDate = deleteDate;
+        this.creationDate = creationDate;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -14,7 +14,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class InventoryItem {
 
     @Id
@@ -47,6 +46,16 @@ public class InventoryItem {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         InventoryItem inventoryItem = (InventoryItem) o;
         return Objects.equals(inventoryItemId, inventoryItem.inventoryItemId);
+    }
+
+    @Builder
+    public InventoryItem(Long inventoryItemId, String inventoryItemName, Company company, String inventoryItemDescription, List<InventoryRecord> inventoryRecords, List<OrderItem> orderItems) {
+        this.inventoryItemId = inventoryItemId;
+        this.inventoryItemName = inventoryItemName;
+        this.company = company;
+        this.inventoryItemDescription = inventoryItemDescription;
+        this.inventoryRecords = inventoryRecords;
+        this.orderItems = orderItems;
     }
 
     @Override

@@ -11,7 +11,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Role {
 
     @Id
@@ -31,6 +30,14 @@ public class Role {
     @Override
     public String toString() {
         return roleName.toString();
+    }
+
+
+    @Builder
+    public Role(Long roleId, RoleName roleName, List<User> users) {
+        this.roleId = roleId;
+        this.roleName = roleName;
+        this.users = users;
     }
 
     public enum RoleName {
