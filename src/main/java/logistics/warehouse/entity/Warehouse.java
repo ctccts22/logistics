@@ -14,7 +14,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Warehouse {
 
     @Id
@@ -40,6 +39,14 @@ public class Warehouse {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Warehouse warehouse = (Warehouse) o;
         return Objects.equals(warehouseId, warehouse.warehouseId);
+    }
+
+    @Builder
+    public Warehouse(Long warehouseId, Company company, String location, List<InventoryRecord> inventoryRecords) {
+        this.warehouseId = warehouseId;
+        this.company = company;
+        this.location = location;
+        this.inventoryRecords = inventoryRecords;
     }
 
     @Override

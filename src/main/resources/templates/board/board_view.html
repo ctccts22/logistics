@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+
+<th:block layout:fragment="customJs">
+  <script th:inline="javascript">
+      /*<![CDATA[*/
+      const deletionSuccess = [[${deletionSuccess != null}]];
+      const error = [[${error != null}]];
+
+      if (deletionSuccess) {
+          Swal.fire(
+              '성공!',
+              '게시글이 삭제되었습니다.',
+              'success'
+          )
+          } else if (error) {
+              Swal.fire({
+                  icon: 'error',
+                  title: '웁스...',
+                  text: '에러입니다.'
+              })
+          }
+      /*]]>*/
+
+      $('#datatable-custom').DataTable({
+          "paging": false,
+          "info": false,
+          "searching": false
+      });
+  </script>
+</th:block>
+
+<th:block layout:fragment="customContent">
+  <div class="container" style="max-width: 1000px">
+    <div class="py-5 text-center">
+      <h2 th:text="#{page.board}">글 목록</h2>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-2">
+        <button class="btn btn-primary" onclick="location.href='addForm.html'" th:onclick="|location.href='@{/board/addBoard}'|" th:text="#{page.addBoard}" type="button">글 등록</button>
+      </div>
+      <div class="col-md-10">
+        <form class="d-flex justify-content-end" th:action="@{/board/boardView}" method="get">
+          <select class="form-select me-2" name="searchType">
+            <option value="title" th:text="#{label.board.title}">Title</option>
+            <option value="writer" th:text="#{label.board.writer}">Writer</option>
+          </select>
+          <input class="form-control me-2" type="text" name="searchQuery" placeholder="Search..." aria-label="Search">
+          <button class="btn btn-outline-success" type="submit" th:text="#{button.search}">Search</button>
+          <button class="btn btn-outline-danger" type="button" th:onclick="|location.href='@{/board/boardView}'|" th:text="#{button.reset}">reset</button>
+        </form>
+      </div>
+    </div>
+
+
+
+    <hr class="my-4">
+    <div>
+      <table class="table" id="datatable-custom">
+        <thead>
+        <tr>
+          <th th:text="#{label.board.id}">ID</th>
+          <th th:text="#{label.board.title}">제목</th>
+          <th th:text="#{label.board.writer}">작성자</th>
+          <th th:text="#{label.board.view}">조회수</th>
+          <th th:text="#{label.board.regDate}">등록일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${boards}">
+          <td><a th:href="@{/board/{id}(id=${board.id})}" th:text="${board.id}">글 ID</a></td>
+          <td><a th:href="@{/board/{id}(id=${board.id})}" th:text="${board.title}">제목</a></td>
+          <td th:text="${board.writer}">작성자</td>
+          <td th:text="${board.view}">조회수</td>
+          <td th:text="${board.regDate}">등록일</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <th:block th:each="page:${#numbers.sequence(startPage,endPage)}">
+      <a class="btn btn-primary" th:href="@{/board/boardView(page=${page-1})}" th:if="${page != nowPage}"
+         th:text="${page}"></a>
+      <a class="btn btn-primary active" th:if="${page==nowPage}" th:text="${page}"></a>
+    </th:block>
+
+  </div>
+</th:block>
+</html>

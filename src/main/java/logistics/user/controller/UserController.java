@@ -57,8 +57,6 @@ public class UserController {
         return response;
     }
 
-
-
     @GetMapping("/updateUser")
     public String showUpdateUserForm(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

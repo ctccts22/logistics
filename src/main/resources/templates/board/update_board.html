@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/default}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <style>
+
+  </style>
+</head>
+
+<th:block layout:fragment="customJs">
+
+</th:block>
+
+<th:block layout:fragment="customContent">
+  <div class="container">
+
+    <div class="py-5 text-center">
+      <h2 th:text="#{page.updateBoard}">글 수정</h2>
+    </div>
+
+    <form th:action th:object="${board}" method="post">
+
+      <div>
+        <input type="hidden" id="writer" class="form-control"  th:field="*{writer}" value="testUser" placeholder="제목을 입력하세요.">
+      </div>
+
+      <div>
+        <label for="subject" th:text="#{label.board.title}">제목</label>
+        <input type="text" id="subject" th:field="*{title}" class="form-control" placeholder="제목을 입력하세요.">
+
+      </div>
+      <div>
+        <label for="contents" th:text="#{label.board.content}">내용</label>
+        <textarea cols="150" rows="10" id="contents" th:field="*{content}" class="form-control" placeholder="내용을 입력하세요.">
+
+            </textarea>
+
+      </div>
+
+      <hr class="my-4">
+
+      <div class="row">
+        <div class="col">
+          <button class="w-100 btn btn-primary btn-lg" type="submit" th:text="#{button.save}">저장</button>
+        </div>
+        <div class="col">
+          <button class="w-100 btn btn-secondary btn-lg"
+                  onclick="location.href='items.html'"
+                  th:onclick="|location.href='@{/board/boardView}'|"
+                  type="button" th:text="#{button.cancel}">취소</button>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+</th:block>
+</html>

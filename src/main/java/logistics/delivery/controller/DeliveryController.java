@@ -4,7 +4,6 @@ import logistics.delivery.dto.DeliveryDTO;
 import logistics.delivery.entity.Delivery;
 import logistics.delivery.repository.DeliveryRepository;
 import logistics.delivery.service.DeliveryService;
-import logistics.order.entity.Order;
 import logistics.shipment.entity.Shipment;
 import logistics.shipment.repository.ShipmentRepository;
 import lombok.AllArgsConstructor;
@@ -48,6 +47,7 @@ public class DeliveryController {
         log.info("deliveryDTO :{}", deliveryDTO);
         return "redirect:/delivery/deliveryView";
     }
+
     @PostMapping("/updateDeliveryView")
     @ResponseBody
     public String updateDelivery(@RequestBody DeliveryDTO deliveryDTO) {

@@ -13,7 +13,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Delivery {
 
     @Id
@@ -44,6 +43,14 @@ public class Delivery {
     @Override
     public int hashCode() {
         return Objects.hash(deliveryId);
+    }
+
+    @Builder
+    public Delivery(Long deliveryId, Shipment shipment, LocalDateTime deliveryDate, Delivery.deliveryStatus deliveryStatus) {
+        this.deliveryId = deliveryId;
+        this.shipment = shipment;
+        this.deliveryDate = deliveryDate;
+        this.deliveryStatus = deliveryStatus;
     }
 
     public enum deliveryStatus {
