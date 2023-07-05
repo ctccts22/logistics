@@ -5,6 +5,51 @@
 <head></head>
 <th:block layout:fragment="customJs">
   <script th:inline="javascript">
+      // 회원 탈퇴 ajax
+      $(document).ready(function () {
+          $('.delete-button').on('click', function () {
+              let companyId = $(this).data('id');
+              console.log(companyId);
+
+              Swal.fire({
+                  title: '회원탈퇴',
+                  html:
+                      `<form id="deleteCompany">
+                <div class="form-group">
+                    <label for="edit-isDeleted">탈퇴여부:</label>
+                    <select class="form-control" id="edit-isDeleted"
+                            name="isDeleted">
+                        <option value='Y'>Y</option>
+                        <option value='N'>N</option>
+                    </select>
+                </div>
+              </form>`,
+                  showCancelButton: true,
+                  confirmButtonText: '수정',
+                  cancelButtonText: '취소',
+                  preConfirm: () => {
+                      $.ajax({
+                          url: '/company' + '/' + companyId + '/deleteCompany',
+                          method: 'POST',
+                          data: {
+                              companyIsDeleted: $('#edit-isDeleted').val(),
+                          },
+                          success: function (response) {
+                              Swal.fire('Success!', '회원정보가 성공적으로 수정되었습니다.', 'success')
+                                  .then(() => {
+                                      location.reload();
+                                  });
+                          },
+                          error: function () {
+                              Swal.fire('Error!', '회원정보 수정에 실패했습니다.', 'error');
+                          },
+                      });
+                  }
+              });
+          });
+      });
+
+      // 업데이트 성공 여부 alert
       /*<![CDATA[*/
       const updatedSuccess = [[${updatedSuccess != null}]];
       const error = [[${error != null}]];
@@ -23,83 +68,84 @@
           })
       }
       /*]]>*/
+
   </script>
 </th:block>
 
 <th:block layout:fragment="customContent">
   <div class="container">
     <div class="x_panel scrollable-panel">
-        <div class="py-0 text-center">
-          <h2>사업자정보 상세</h2>
-        </div>
-        <hr class="my-4">
-        <!-- 추가 -->
-        <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
+      <div class="py-0 text-center">
+        <h2>사업자정보 상세</h2>
+      </div>
+      <hr class="my-4">
+      <!-- 추가 -->
+      <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
 
-        <div>
-          <label for="companyId">ID</label>
-          <input class="form-control" id="companyId" name="companyId" readonly th:value="${company.companyId}"
-                 type="text">
+      <div>
+        <label for="companyId">ID</label>
+        <input class="form-control" id="companyId" name="companyId" readonly th:value="${company.companyId}"
+               type="text">
+      </div>
+      <div>
+        <label for="companyName">사업자이름</label>
+        <input class="form-control" id="companyName" name="companyName" readonly th:value="${company.companyName}"
+               type="text">
+      </div>
+      <div>
+        <label for="companyType">사업자종류</label>
+        <input class="form-control" id="companyType" name="companyType" readonly th:value="${company.companyType}"
+               type="text">
+      </div>
+      <div>
+        <label for="companyLicense">사업자번호</label>
+        <input class="form-control" id="companyLicense" name="companyLicense" readonly
+               th:value="${company.companyLicense}" type="text">
+      </div>
+
+      <div>
+        <label for="companyAddress">사업자주소</label>
+        <input class="form-control" id="companyAddress" name="companyAddress" readonly
+               th:value="${company.companyAddress}" type="text">
+      </div>
+
+      <div>
+        <label for="companyIsDeleted">사업자상태</label>
+        <input class="form-control" id="companyIsDeleted" name="companyIsDeleted" readonly
+               th:value="${company.companyIsDeleted}" type="text">
+      </div>
+
+      <div>
+        <label for="companyContent">사업자상세</label>
+        <textarea class="form-control" id="companyContent" name="companyContent" readonly
+                  th:text="${company.companyContent}"></textarea>
+      </div>
+
+
+      <hr class="my-4">
+
+      <div class="row">
+        <div class="col">
+          <button class="w-100 btn btn-primary btn-lg"
+                  th:onclick="|location.href='@{/company/{id}/updateCompany(id=${company.companyId})}'|"
+                  th:text="#{page.updateBoard}" type="button">글 수정
+          </button>
         </div>
-        <div>
-          <label for="companyName">사업자이름</label>
-          <input class="form-control" id="companyName" name="companyName" readonly th:value="${company.companyName}"
-                 type="text">
-        </div>
-        <div>
-          <label for="companyType">사업자종류</label>
-          <input class="form-control" id="companyType" name="companyType" readonly th:value="${company.companyType}"
-                 type="text">
-        </div>
-        <div>
-          <label for="companyLicense">사업자번호</label>
-          <input class="form-control" id="companyLicense" name="companyLicense" readonly
-                 th:value="${company.companyLicense}" type="text">
+        <div class="col">
+          <button class="w-100 btn btn-secondary btn-lg"
+                  th:onclick="|location.href='@{/company/companyView}'|"
+                  th:text="#{button.list}" type="button">목록으로
+          </button>
         </div>
 
-        <div>
-          <label for="companyAddress">사업자주소</label>
-          <input class="form-control" id="companyAddress" name="companyAddress" readonly
-                 th:value="${company.companyAddress}" type="text">
-        </div>
-
-        <div>
-          <label for="companyIsDeleted">사업자상태</label>
-          <input class="form-control" id="companyIsDeleted" name="companyIsDeleted" readonly
-                 th:value="${company.companyIsDeleted}" type="text">
-        </div>
-
-        <div>
-          <label for="companyContent">사업자상세</label>
-          <textarea class="form-control" id="companyContent" name="companyContent" readonly
-                    th:text="${company.companyContent}"></textarea>
-        </div>
-
-
-        <hr class="my-4">
-
-        <div class="row">
-          <div class="col">
-            <button class="w-100 btn btn-primary btn-lg"
-                    th:onclick="|location.href='@{/company/{id}/updateCompany(id=${company.companyId})}'|"
-                    th:text="#{page.updateBoard}" type="button">글 수정
-            </button>
-          </div>
-          <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg"
-                    th:onclick="|location.href='@{/company/companyView}'|"
-                    th:text="#{button.list}" type="button">목록으로
-            </button>
-          </div>
-
-          <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg"
-                    th:onclick="|location.href='@{/company/{id}/deleteCompany(id=${company.companyId})}'|"
-                    th:text="#{button.delete}" type="button">삭제
-            </button>
-          </div>
+        <div class="col">
+          <button class="w-100 btn btn-secondary btn-lg delete-button"
+                  th:attr="data-id=${company.companyId}"
+                  th:text="#{button.delete}" type="button">삭제
+          </button>
         </div>
       </div>
     </div>
+  </div>
 </th:block>
 </html>
