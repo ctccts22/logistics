@@ -5,6 +5,7 @@ import logistics.company.dto.CompanyDTO;
 import logistics.company.entity.Company;
 import logistics.company.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
     private final ModelMapper modelMapper;
@@ -48,6 +50,20 @@ public class CompanyServiceImpl implements CompanyService {
         List<Company> companies = companyRepository.findAll();
         return companies.stream()
                 .collect(Collectors.groupingBy(company -> company.getCompanyType().name(), Collectors.counting()));
+    }
+    @Override
+    public void deleteCompany(Long id, String companyIsDeleted) {
+        Optional<Company> companyOptional = companyRepository.findById(id);
+
+        if (companyOptional.isPresent()) {
+            Company company = companyOptional.get();
+            company.deleteWith(companyIsDeleted);
+            log.info("companyIsDeleted: {}", companyIsDeleted);
+
+            companyRepository.save(company);
+        } else {
+            throw new EntityNotFoundException("아이디를 찾을 수 없습니다 " + id);
+        }
     }
 
 }

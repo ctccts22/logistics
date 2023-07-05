@@ -84,4 +84,12 @@ public class CompanyController {
             return "redirect:/company/{id}";
         }
     }
+    @PostMapping("/{id}/deleteCompany")
+    @ResponseBody
+    public String deleteCompany(@PathVariable Long id,
+                                @RequestParam(required = false) String companyIsDeleted) {
+        companyService.deleteCompany(id, companyIsDeleted);
+
+        return "redirect:/company/companyView";
+    }
 }

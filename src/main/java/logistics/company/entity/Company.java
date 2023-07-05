@@ -93,6 +93,10 @@ public class Company {
         this.companyContent = companyDTO.getCompanyContent();
     }
 
+    public void deleteWith(String companyIsDeleted) {
+        this.companyIsDeleted = companyIsDeleted;
+    }
+
     public enum CompanyType {
         LOGISTICS_PROVIDER,
         CUSTOMER,
