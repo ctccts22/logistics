@@ -112,8 +112,15 @@
       });
 
 
+      const updatedSuccess = [[${updatedSuccess != null}]];
       const error = [[${error != null}]];
-      if (error) {
+      if (updatedSuccess) {
+          Swal.fire(
+              '성공!',
+              '게시글이 삭제되었습니다.',
+              'success'
+          )}
+      else if (error) {
           Swal.fire({
               icon: 'error',
               title: '웁스...',
