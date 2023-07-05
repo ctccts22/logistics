@@ -1,9 +1,9 @@
 package logistics.company.entity;
 
 import jakarta.persistence.*;
+import logistics.company.dto.CompanyDTO;
 import logistics.inventory.entity.InventoryItem;
 import logistics.order.entity.Order;
-import logistics.user.entity.Role;
 import logistics.warehouse.entity.Warehouse;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -33,11 +33,14 @@ public class Company {
     @Column(name = "company_license", length = 50, nullable = false)
     private String companyLicense;
 
-    @Column(name = "company_address", length = 50, nullable = false)
+    @Column(name = "company_address", length = 50, nullable = true)
     private String companyAddress;
 
     @Column(name = "is_deleted")
     private String companyIsDeleted;
+
+    @Column(name = "company_content", length = 255)
+    private String companyContent;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
@@ -69,7 +72,7 @@ public class Company {
         return Objects.hash(companyId);
     }
 
-    @Builder
+    @Builder(toBuilder = true)
     public Company(Long companyId, String companyName, CompanyType companyType, String companyLicense, String companyAddress, String companyIsDeleted, List<Warehouse> warehouses, List<InventoryItem> inventoryItems, List<Order> orders) {
         this.companyId = companyId;
         this.companyName = companyName;
@@ -80,6 +83,14 @@ public class Company {
         this.warehouses = warehouses;
         this.inventoryItems = inventoryItems;
         this.orders = orders;
+    }
+
+    public void updateWith(CompanyDTO companyDTO) {
+        this.companyName = companyDTO.getCompanyName();
+        this.companyType = companyDTO.getCompanyType();
+        this.companyLicense = companyDTO.getCompanyLicense();
+        this.companyAddress = companyDTO.getCompanyAddress();
+        this.companyContent = companyDTO.getCompanyContent();
     }
 
     public enum CompanyType {

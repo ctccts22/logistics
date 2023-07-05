@@ -11,4 +11,5 @@ public class CompanyDTO {
     private String companyLicense;
     private String companyAddress;
     private String companyIsDeleted;
+    private String companyContent;
 }

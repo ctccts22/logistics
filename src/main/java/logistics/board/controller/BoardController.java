@@ -38,27 +38,6 @@ public class BoardController {
      * @param pageable 페이징 적용
      * @return
      */
-//    @GetMapping("/boardView")
-//    public String showBoardViewForm(Model model,
-//                                    @PageableDefault(page=0, size=10, sort="id", direction=Sort.Direction.DESC) Pageable pageable) {
-//        Page<BoardDTO> boardDTOPage = boardService.getBoardPage(pageable);
-//
-//        int nowPage = boardDTOPage.getPageable().getPageNumber() + 1;
-//        //-1값이 들어가는 것을 막기 위해서 max값으로 두 개의 값을 넣고 더 큰 값을 넣어주게 된다.
-//        int startPage =  Math.max(nowPage - 4, 1);
-//        int endPage = Math.min(nowPage+9, boardDTOPage.getTotalPages());
-//
-//        model.addAttribute("nowPage",nowPage);
-//        model.addAttribute("startPage", startPage);
-//        model.addAttribute("endPage", endPage);
-//
-//        model.addAttribute("title", "게시판");
-//        model.addAttribute("boards", boardDTOPage);
-//
-//        return "board/board_view";
-//    }
-
-
     @GetMapping("/boardView")
     public String showBoardViewForm(Model model,
                                     @RequestParam(name = "searchQuery", required = false) String searchQuery,

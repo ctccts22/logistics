@@ -2,9 +2,10 @@ package logistics.company.service;
 
 import logistics.company.dto.CompanyDTO;
 
+import java.util.Map;
+
 public interface CompanyService {
-
-    void addCompanyView(CompanyDTO companyDTO);
-    void updateCompanyView(CompanyDTO companyDTO);
-
+    void addCompany(CompanyDTO companyDTO);
+    void updateCompany(Long id, CompanyDTO companyDTO);
+    Map<String, Long> getCompanyTypeCounts();
 }
