@@ -13,7 +13,6 @@ public class CompanyCustomRepositoryImpl extends QuerydslRepositorySupport imple
         super(Company.class);
     }
 
-
     @Override
     public Company findByCompanyId(Long companyId) {
         return from(qCompany)

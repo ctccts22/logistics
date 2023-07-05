@@ -3,6 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head>
+
 </head>
 
 <th:block layout:fragment="customJs">
@@ -17,13 +18,13 @@
               '게시글이 삭제되었습니다.',
               'success'
           )
-          } else if (error) {
-              Swal.fire({
-                  icon: 'error',
-                  title: '웁스...',
-                  text: '에러입니다.'
-              })
-          }
+      } else if (error) {
+          Swal.fire({
+              icon: 'error',
+              title: '웁스...',
+              text: '에러입니다.'
+          });
+      }
       /*]]>*/
 
       $('#datatable-custom').DataTable({
@@ -35,60 +36,69 @@
 </th:block>
 
 <th:block layout:fragment="customContent">
-  <div class="container" style="max-width: 1000px">
-    <div class="py-5 text-center">
-      <h2 th:text="#{page.board}">글 목록</h2>
-    </div>
+  <div class="container">
+    <div class="x_panel scrollable-panel">
 
-    <div class="row mb-3">
-      <div class="col-md-2">
-        <button class="btn btn-primary" onclick="location.href='addForm.html'" th:onclick="|location.href='@{/board/addBoard}'|" th:text="#{page.addBoard}" type="button">글 등록</button>
+        <div class="py-0 text-center">
+          <h2 th:text="#{page.board}">글 목록</h2>
+        </div>
+        <hr class="my-4">
+        <div class="row mb-3">
+          <div class="col-md-2">
+            <button class="btn btn-primary" th:onclick="|location.href='@{/board/addBoard}'|" th:text="#{page.addBoard}"
+                    type="button">글 등록
+            </button>
+          </div>
+          <!-- Add this line to act as a spacer -->
+          <div class="col-md-5"></div>
+          <div class="col-md-5">
+            <form class="d-flex justify-content-end" method="get" th:action="@{/board/boardView}">
+              <select class="form-select me-2" name="searchType">
+                <option th:text="#{label.board.title}" value="title">Title</option>
+                <option th:text="#{label.board.writer}" value="writer">Writer</option>
+              </select>
+              <input aria-label="Search" class="form-control me-2" name="searchQuery" placeholder="Search..."
+                     type="text">
+              <button class="btn btn-outline-success" th:text="#{button.search}" type="submit">Search</button>
+              <button class="btn btn-outline-danger" th:onclick="|location.href='@{/board/boardView}'|"
+                      th:text="#{button.reset}"
+                      type="button">reset
+              </button>
+            </form>
+          </div>
+        </div>
+
+
+        <div>
+          <table class="table dataTable no-footer dtr-inline"
+                 id="datatable-custom" role="grid"
+                 style="width: 100%;">
+            <thead>
+            <tr>
+              <th th:text="#{label.board.id}">ID</th>
+              <th th:text="#{label.board.title}">제목</th>
+              <th th:text="#{label.board.writer}">작성자</th>
+              <th th:text="#{label.board.view}">조회수</th>
+              <th th:text="#{label.board.regDate}">등록일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board : ${boards}">
+              <td><a style="color: blue;" th:href="@{/board/{id}(id=${board.id})}" th:text="${board.id}">글 ID</a></td>
+              <td><a style="color: blue;" th:href="@{/board/{id}(id=${board.id})}" th:text="${board.title}">제목</a></td>
+              <td th:text="${board.writer}">작성자</td>
+              <td th:text="${board.view}">조회수</td>
+              <td th:text="${board.regDate}">등록일</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <th:block th:each="page:${#numbers.sequence(startPage,endPage)}">
+          <a class="btn btn-primary" th:href="@{/board/boardView(page=${page-1})}" th:if="${page != nowPage}"
+             th:text="${page}"></a>
+          <a class="btn btn-primary active" th:if="${page==nowPage}" th:text="${page}"></a>
+        </th:block>
       </div>
-      <div class="col-md-10">
-        <form class="d-flex justify-content-end" th:action="@{/board/boardView}" method="get">
-          <select class="form-select me-2" name="searchType">
-            <option value="title" th:text="#{label.board.title}">Title</option>
-            <option value="writer" th:text="#{label.board.writer}">Writer</option>
-          </select>
-          <input class="form-control me-2" type="text" name="searchQuery" placeholder="Search..." aria-label="Search">
-          <button class="btn btn-outline-success" type="submit" th:text="#{button.search}">Search</button>
-          <button class="btn btn-outline-danger" type="button" th:onclick="|location.href='@{/board/boardView}'|" th:text="#{button.reset}">reset</button>
-        </form>
-      </div>
     </div>
-
-
-
-    <hr class="my-4">
-    <div>
-      <table class="table" id="datatable-custom">
-        <thead>
-        <tr>
-          <th th:text="#{label.board.id}">ID</th>
-          <th th:text="#{label.board.title}">제목</th>
-          <th th:text="#{label.board.writer}">작성자</th>
-          <th th:text="#{label.board.view}">조회수</th>
-          <th th:text="#{label.board.regDate}">등록일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="board : ${boards}">
-          <td><a th:href="@{/board/{id}(id=${board.id})}" th:text="${board.id}">글 ID</a></td>
-          <td><a th:href="@{/board/{id}(id=${board.id})}" th:text="${board.title}">제목</a></td>
-          <td th:text="${board.writer}">작성자</td>
-          <td th:text="${board.view}">조회수</td>
-          <td th:text="${board.regDate}">등록일</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <th:block th:each="page:${#numbers.sequence(startPage,endPage)}">
-      <a class="btn btn-primary" th:href="@{/board/boardView(page=${page-1})}" th:if="${page != nowPage}"
-         th:text="${page}"></a>
-      <a class="btn btn-primary active" th:if="${page==nowPage}" th:text="${page}"></a>
-    </th:block>
-
-  </div>
 </th:block>
 </html>

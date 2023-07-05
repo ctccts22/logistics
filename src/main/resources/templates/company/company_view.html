@@ -1,247 +1,223 @@
 <html layout:decorate="~{layout/default}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
-<head></head>
 
+<head>
+  <style>
+      .dataTables_paginate .paginate_button {
+          margin: 0 4px;
+          padding: 6px 12px;
+          color: #dddddd;
+          background: #dddddd;
+          border: 1px solid #dddddd;
+          border-radius: 4px;
+          cursor: pointer;
+          text-decoration: none;
+      }
+
+      .status-light {
+          display: inline-block;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+      }
+
+  </style>
+</head>
 <th:block layout:fragment="customJs">
-  <script>
-      $(document).ready(function () {
-          $('body').on('click', '.add-button', function () {
-              const row = $(this).closest('tr');
+  <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e43182b8fed7c7c5bc5dd2048b207a2b&libraries=services"
+          type="text/javascript"></script>
+  <script th:inline="javascript">
+      setTimeout(function () {
+          var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+              mapOption = {
+                  center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+                  level: 3 // 지도의 확대 레벨
+              };
 
-              const companyId = row.find('td[data-key="companyId"]').text();
-              const companyName = row.find('td[data-key="companyName"]').text();
-              const companyLicense = row.find('td[data-key="companyLicense"]').text();
-              const companyAddress = row.find('td[data-key="companyAddress"]').text();
+          // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+          var map = new kakao.maps.Map(mapContainer, mapOption);
 
-              Swal.fire({
-                  title: '사업자등록',
-                  html:
-                      `<form id="add-company-form">
-                      <input  type="hidden" id="add-companyId" name="companyId" value="${companyId}"/>
-                      <div class="form-group">
-                          <label for="add-companyName">사업자상호명:</label>
-                          <input class="form-control" id="add-companyName"
-                                 name="companyName" value="${companyName}"
-                                 type="text"/>
-                      </div>
-                        <div class="form-group">
-                          <label for="add-companyType">사업자종류:</label>
-                            <select class="form-control" id="add-companyType"
-                          name="companyType">
-                              <option value="LOGISTICS_PROVIDER">물류회사</option>
-                              <option value="CUSTOMER">바이어</option>
-                              <option value="SUPPLIER">공급회사</option>
-                            </select>
-                      </div>
-                      <div class="form-group">
-                          <label for="add-companyLicense">사업자번호:</label>
-                          <input class="form-control" id="add-companyLicense"
-                                 name="companyLicense" value="${companyLicense}"
-                                 type="text"/>
-                      </div>
-                      <div class="form-group">
-                          <label for="add-companyAddress">사업자주소:</label>
-                          <input class="form-control" id="add-companyAddress"
-                                 name="companyAddress" value="${companyAddress}"
-                                 type="text"/>
-                      </div>
-                  </form>`,
-                  showCancelButton: true,
-                  confirmButtonText: '등록',
-                  cancelButtonText: '최소',
-                  preConfirm: () => {
-                      const form = document.getElementById('add-company-form');
-                      $.ajax({
-                          url: '/company/addCompanyView',
-                          method: 'POST',
-                          data: {
-                              companyId: $('#add-companyId').val(),
-                              companyName: $('#add-companyName').val(),
-                              companyType: $('#add-companyType').val(),
-                              companyLicense: $('#add-companyLicense').val(),
-                              companyAddress: $('#add-companyAddress').val(),
-                          },
-                          success: function (response) {
-                              Swal.fire('Success!', '성공적으로 등록되었습니다.', 'success')
-                                  .then(() => {
-                                      location.reload();
-                                  });
-                          },
-                          error: function () {
-                              Swal.fire('Error!', '수정에 등록했습니다.', 'error');
-                          },
+          var geocoder = new kakao.maps.services.Geocoder();
+
+          // 주소를 카카오맵에 연동시킬수 있기 자르기
+          function sliceAddress(address) {
+              var parts = address.split(' ');
+              var slicedParts = parts.slice(1, -1);
+              var slicedAddress = slicedParts.join(' ');
+
+              return slicedAddress;
+          }
+
+          // address-search 함수
+          function searchAddress(address) {
+              var slicedAddress = sliceAddress(address);
+              console.log(slicedAddress);
+
+              geocoder.addressSearch(slicedAddress, function (results, status) {
+                  console.log(status);
+                  console.log(results);
+                  // 정상적으로 검색이 완료됐으면
+                  if (status === kakao.maps.services.Status.OK) {
+                      var coords = new kakao.maps.LatLng(results[0].y, results[0].x);
+
+                      // 결과값으로 받은 위치를 마커로 표시합니다
+                      var marker = new kakao.maps.Marker({
+                          map: map,
+                          position: coords
                       });
-                  }
-              }).then((result) => {
-                  if (result.isConfirmed) {
+
+                      // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                      map.setCenter(coords);
                   }
               });
+          }
+
+          document.getElementById('companySelector').addEventListener('change', function (e) {
+              console.log(e.target.value);  // Add this line
+              searchAddress(e.target.value);
           });
+      }, 500); // wait 500 milliseconds for the API to load
+
+
+      const ctx = document.getElementById('chart').getContext('2d');
+
+      const data = [[${companyTypeCounts}]];
+      const labels = Object.keys(data);
+      const values = Object.values(data);
+      console.log(labels);
+      console.log(values);
+
+      const chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: labels,
+              datasets: [{
+                  label: '사업자 종류별 수',
+                  data: values,
+                  backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 205, 86, 0.2)'],
+                  borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)', 'rgba(255, 205, 86, 1)'],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  yAxes: [{
+                      ticks: {
+                          beginAtZero: true
+                      }
+                  }]
+              }
+          }
       });
 
 
-      $('body').on('click', '.edit-button', function () {
-          const row = $(this).closest('tr');
-
-          const companyId = row.find('td[data-key="companyId"]').text();
-          const companyName = row.find('td[data-key="companyName"]').text();
-          const companyLicense = row.find('td[data-key="companyLicense"]').text();
-          const companyAddress = row.find('td[data-key="companyAddress"]').text();
-
+      const error = [[${error != null}]];
+      if (error) {
           Swal.fire({
-              title: '사업자수정',
-              html:
-                  `<form id="edit-companyInfo-form">
-                      <input  type="hidden" id="edit-companyId" name="companyId" value="${companyId}"/>
-                      <div class="form-group">
-                          <label for="edit-companyName">사업자상호명:</label>
-                          <input class="form-control" id="edit-companyName"
-                                 name="companyName" value="${companyName}"
-                                 type="text"/>
-                      </div>
-                       <div class="form-group">
-                          <label for="edit-companyType">사업자종류:</label>
-                            <select class="form-control" id="edit-companyType"
-                          name="companyType">
-                              <option value="LOGISTICS_PROVIDER">물류회사</option>
-                              <option value="CUSTOMER">바이어</option>
-                              <option value="SUPPLIER">공급회사</option>
-                            </select>
-                      </div>
-                      <div class="form-group">
-                          <label for="edit-companyLicense">사업자번호:</label>
-                          <input class="form-control" id="edit-companyLicense"
-                                 name="companyLicense" value="${companyLicense}"
-                                 type="text"/>
-                      </div>
-                      <div class="form-group">
-                          <label for="edit-companyAddress">사업자주소:</label>
-                          <input class="form-control" id="edit-companyAddress"
-                                 name="companyAddress" value="${companyAddress}"
-                                 type="text"/>
-                      </div>
-                        <div class="form-group">
-                           <label for="edit-companyIsDeleted">탈퇴여부:</label>
-                           <select class="form-control" id="edit-companyIsDeleted"
-                                   name="companyIsDeleted">
-                           <option value="Y">Y</option>
-                           <option value="N">N</option>
-                            </select>
-                      </div>
-                  </form>`,
-              showCancelButton: true,
-              confirmButtonText: '등록',
-              cancelButtonText: '최소',
-              preConfirm: () => {
-                  const form = document.getElementById('edit-companyInfo-form');
-                  $.ajax({
-                      url: '/company/updateCompanyView',
-                      method: 'POST',
-                      data: {
-                          companyId: $('#edit-companyId').val(),
-                          companyName: $('#edit-companyName').val(),
-                          companyType: $('#edit-companyType').val(),
-                          companyLicense: $('#edit-companyLicense').val(),
-                          companyAddress: $('#edit-companyAddress').val(),
-                          companyIsDeleted: $('#edit-companyIsDeleted').val(),
-                      },
-                      success: function (response) {
-                          Swal.fire('Success!', '성공적으로 수정되었습니다.', 'success')
-                              .then(() => {
-                                  location.reload();
-                              });
-                      },
-                      error: function () {
-                          Swal.fire('Error!', '수정에 실패했습니다.', 'error');
-                      },
-                  });
-              }
-          }).then((result) => {
-              if (result.isConfirmed) {
-              }
+              icon: 'error',
+              title: '웁스...',
+              text: '에러입니다.'
           });
+      }
+      $('#datatable-custom').DataTable({
+          "searching": false,
+          "pageLength": 5,
+          "dom": 'rtip',
       });
 
-      $('#datatable-custom').DataTable({
-          pageLength: 5,
+      $('#page-length').change(function () {
+          table.page.len($(this).val()).draw();
       });
   </script>
 </th:block>
 
 <th:block layout:fragment="customContent">
-  <div class="page-title">
-    <div class="title">
-      <div class="x_panel">
-        <div class="x_title">
-          <h2 class="my-4">사업자관리</h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <!-- First panel starts here -->
+        <div class="x_panel scrollable-panel">
+          <div class="py-3 text-center">
+            <h2>사업자 목록</h2>
+          </div>
 
-          <ul class="nav navbar-right panel_toolbox" style="flex-direction: row-reverse">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>
-            <li class="dropdown">
-              <div aria-labelledby="dropdownMenuButton" class="dropdown-menu">
-              </div>
-            </li>
-          </ul>
-
-          <div class="clearfix"></div>
-        </div>
-
-        <div style="display: flex;">
-          <button class="btn btn-outline-secondary add-button" type="submit">사업자등록</button>
-        </div>
-
-        <div class="x_content">
           <div class="row mb-3">
             <div class="col-md-6">
+              <button class="btn btn-primary"
+                      th:onclick="|location.href='@{/company/addCompany}'|"
+                      type="button">사업자등록
+              </button>
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="card-box table-responsive">
-                <div class="col-sm-12">
-                  <div class="dataTables_wrapper container-fluid dt-bootstrap no-footer"
-                       id="datatable-buttons_wrapper">
-
-
-                    <table aria-describedby="datatable-buttons_info"
-                           class="table table-striped table-bordered dataTable no-footer dtr-inline"
-                           id="datatable-custom" role="grid"
-                           style="width: 100%;">
-
-                      <thead class="thead-dark">
-                      <tr role="row">
-                        <th>사업자코드</th>
-                        <th>사업자이름</th>
-                        <th>사업자종류</th>
-                        <th>사업자번호</th>
-                        <th>사업자주소</th>
-                        <th>탈퇴여부</th>
-                        <th>관리</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr class="odd" role="row" th:each="company : ${company}">
-                        <td data-key="companyId" th:text="${company.companyId}"></td>
-                        <td data-key="companyName" th:text="${company.companyName}"></td>
-                        <td data-key="companyType" th:text="${company.companyType}"></td>
-                        <td data-key="companyLicense" th:text="${company.companyLicense}"></td>
-                        <td data-key="companyAddress" th:text="${company.companyAddress}"></td>
-                        <td data-key="companyIsDeleted" th:text="${company.companyIsDeleted}"></td>
-                        <td>
-                          <button class="btn btn-outline-secondary edit-button" type="button">관리</button>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <hr class="my-4">
+          <div class="col-md-12">
+            <table class="table dataTable no-footer dtr-inline"
+                   id="datatable-custom" role="grid"
+                   style="width: 100%;">
+              <thead>
+              <tr role="row">
+                <th style="display: none">사업자코드</th>
+                <th>사업자이름</th>
+                <th>사업자번호</th>
+                <th>사업자종류</th>
+                <th style="display: none">사업자주소</th>
+                <th>사업자상태</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="company : ${company}">
+                <td data-key="companyId" style="display: none" th:text="${company.companyId}"></td>
+                <td data-key="companyName"><a style="color: blue;" th:href="@{/company/{id}(id=${company.companyId})}"
+                                              th:text="${company.companyName}"></a></td>
+                <td data-key="companyLicense" th:text="${company.companyLicense}"></td>
+                <td data-key="companyType" th:text="${company.companyType}"></td>
+                <td data-key="companyAddress" style="display: none" th:text="${company.companyAddress}"></td>
+                <td>
+                  <span data-key="companyIsDeleted"
+                        th:classappend="${company.companyIsDeleted == 'N'}
+                        ? 'status-light bg-success' : 'status-light bg-danger'"></span>
+                  <span th:text="${company.companyIsDeleted}"></span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
           </div>
         </div>
+        <!-- First panel ends here -->
+      </div>
+
+      <div class="col-md-6">
+        <!-- Second panel starts here -->
+        <div class="x_panel scrollable-panel">
+          <div class="py-3 text-center">
+            <h2>사업자 현황</h2>
+            <canvas id="chart"></canvas>
+          </div>
+        </div>
+        <!-- Second panel ends here -->
+      </div>
+    </div>
+
+    <!-- Third panel starts here -->
+    <div class="x_panel scrollable-panel">
+      <div class="py-3 text-center">
+        <h2>사업자 위치</h2>
+
+        <!-- Company selector -->
+        <div class="form-group">
+          <label for="companySelector">Select a company:</label>
+          <select class="form-control" id="companySelector">
+            <option th:each="company : ${company}" th:text="${company.companyName}"
+                    th:value="${company.companyAddress}"></option>
+          </select>
+        </div>
+
+        <!-- Map container -->
+        <div id="map" style="height: 400px;"></div>
+
+
       </div>
     </div>
   </div>

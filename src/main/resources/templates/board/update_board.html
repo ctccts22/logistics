@@ -14,46 +14,51 @@
 
 <th:block layout:fragment="customContent">
   <div class="container">
+    <div class="x_panel scrollable-panel">
 
-    <div class="py-5 text-center">
-      <h2 th:text="#{page.updateBoard}">글 수정</h2>
-    </div>
-
-    <form th:action th:object="${board}" method="post">
-
-      <div>
-        <input type="hidden" id="writer" class="form-control"  th:field="*{writer}" value="testUser" placeholder="제목을 입력하세요.">
+      <div class="py-5 text-center">
+        <h2 th:text="#{page.updateBoard}">글 수정</h2>
       </div>
 
-      <div>
-        <label for="subject" th:text="#{label.board.title}">제목</label>
-        <input type="text" id="subject" th:field="*{title}" class="form-control" placeholder="제목을 입력하세요.">
+      <form method="post" th:action th:object="${board}">
 
-      </div>
-      <div>
-        <label for="contents" th:text="#{label.board.content}">내용</label>
-        <textarea cols="150" rows="10" id="contents" th:field="*{content}" class="form-control" placeholder="내용을 입력하세요.">
+        <div>
+          <input class="form-control" id="writer" placeholder="제목을 입력하세요." th:field="*{writer}" type="hidden"
+                 value="testUser">
+        </div>
+
+        <div>
+          <label for="subject" th:text="#{label.board.title}">제목</label>
+          <input class="form-control" id="subject" placeholder="제목을 입력하세요." th:field="*{title}" type="text">
+
+        </div>
+        <div>
+          <label for="contents" th:text="#{label.board.content}">내용</label>
+          <textarea class="form-control" cols="150" id="contents" placeholder="내용을 입력하세요." rows="10"
+                    th:field="*{content}">
 
             </textarea>
 
-      </div>
-
-      <hr class="my-4">
-
-      <div class="row">
-        <div class="col">
-          <button class="w-100 btn btn-primary btn-lg" type="submit" th:text="#{button.save}">저장</button>
         </div>
-        <div class="col">
-          <button class="w-100 btn btn-secondary btn-lg"
-                  onclick="location.href='items.html'"
-                  th:onclick="|location.href='@{/board/boardView}'|"
-                  type="button" th:text="#{button.cancel}">취소</button>
+
+        <hr class="my-4">
+
+        <div class="row">
+          <div class="col">
+            <button class="w-100 btn btn-primary btn-lg" th:text="#{button.save}" type="submit">저장</button>
+          </div>
+          <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg"
+                    onclick="location.href='items.html'"
+                    th:onclick="|location.href='@{/board/boardView}'|"
+                    th:text="#{button.cancel}" type="button">취소
+            </button>
+          </div>
         </div>
-      </div>
 
-    </form>
+      </form>
 
+    </div>
   </div>
 </th:block>
 </html>
