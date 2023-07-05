@@ -1,4 +1,3 @@
-# B2B 통합 물류 관리 시스템
 
 ## 물류관리프로젝트
 
@@ -41,3 +40,20 @@
 <li><strong>산적 관리</strong>: 물건 산적 상태를 관리합니다. 산적 상태가 Arrived로 업데이트 완료되면, 배송 관리에서 등록할 수 있습니다.</li>
 <li><strong>배송 관리</strong>: 최종 배송 상태를 나타냅니다.</li>
 </ol>
+
+## 진행 현황
+<p>현재 더 나은 포트폴리오를 위해 지속적인 업데이트를 진행중입니다:</p>
+<p>사업자 관리 전면 수정</p>
+<p>1. 카카오 맵 API 와 주소 API를 활용해 사업자주소와 위치를 바로 파악 할 수 있습니다.</p>
+<img width="792" src="https://github.com/ctccts22/logistics/assets/115934236/255aee97-50d4-4e4f-be32-39db6617aba0">
+<p>2. 회원목록UI 수정 기존 테이블UI 가독성 문제해결. 다른 테이블도 세부적인 수정 예정</p>
+<img width="792" src="https://github.com/ctccts22/logistics/assets/115934236/c1acb4be-8c1a-4f4e-832b-979ae00d80c0">
+<p>3. 게시판 추가(메세지 국제화적용) -> 기본적인 CRUD, 조회수 증가 그리고 페이징처리</p>
+<img width="792" src="https://github.com/ctccts22/logistics/assets/115934236/893121cb-f43c-4644-b728-a0f3b2bb6368">
+<p> -> Create: 스프링시큐리티(Authentication)사용으로 로그인한 유저가 글을 등록하면 자동으로 유저닉네임이 게시판 글쓴이로 데이터 베이스에 저장됩니다.</p>
+<img width="792" src="https://github.com/ctccts22/logistics/assets/115934236/b0fe1f71-7126-4db9-b364-af9842509d40">
+<p> -> Update & Delete: 스프링시큐리티사용으로 어드민은 모든 글을 수정 삭제 할수 있지만, 일반 유저는 자신의 글만 수정삭제가 가능합니다.</p>
+<img width="792" src="https://github.com/ctccts22/logistics/assets/115934236/f85e61e9-fd11-476f-8a31-797cce5d2321">
+
+
+
